@@ -1,6 +1,3 @@
-# Mudae-Tier-Maker---by-Tuxn88
-Este projeto foi desenvolvido inicialmente para uso pessoal, com o objetivo de facilitar a gestão e visualização do meu próprio harem. Decidi disponibilizá-lo de forma pública para que outras pessoas também possam organizar suas coleções de maneira prática, sem complicações.
-
 🛠️ **Mudae Tier Maker - by Tuxn88**
 Patch de Atualização (ver. 1.6)
 
@@ -26,7 +23,7 @@ Patch de Atualização (ver. 1.6)
 **Melhorias e Ajustes:**
 
 
-:camera_with_flash: **Download Limpo:** A lixeira e os botões de ação ficam invisíveis no momento de gerar o PNG, garantindo que o resultado final foque apenas na sua tier list.
+📸 **Download Limpo:** A lixeira e os botões de ação ficam invisíveis no momento de gerar o PNG, garantindo que o resultado final foque apenas na sua tier list.
 
 :eye: **Melhor Legibilidade:** Botões redesenhados com cores pastéis e emojis para facilitar a navegação e o contraste do texto.
 
@@ -34,4 +31,4 @@ Patch de Atualização (ver. 1.6)
 
 
 (ver. 1.6)
-:tools: **Mudae Tier Maker - by Tuxn88**
+🛠️ **Mudae Tier Maker - by Tuxn88**

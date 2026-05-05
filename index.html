@@ -19,14 +19,14 @@
             background-color: var(--bg); 
             background-image: linear-gradient(rgba(0,0,0, var(--bg-dim)), rgba(0,0,0, var(--bg-dim))), var(--bg-img);
             background-size: cover; background-attachment: fixed; background-position: center;
-            color: var(--text); padding: 15px; margin: 0; transition: background 0.3s;
+            color: var(--text); padding: 15px; margin: 0; transition: background 0.3s, color 0.3s;
         }
 
         /* --- SIDEBAR --- */
         #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 998; }
         #sidebar { position: fixed; left: -300px; top: 0; width: 280px; height: 100%; background: var(--panel); box-shadow: 5px 0 15px rgba(0,0,0,0.5); transition: 0.3s; z-index: 999; padding: 20px; border-right: 1px solid rgba(255,255,255,0.1); overflow-y: auto; box-sizing: border-box; }
         #sidebar.open { left: 0; }
-        .sidebar-toggle { position: fixed; left: 15px; top: 15px; width: 45px; height: 45px; background: var(--panel); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 900; font-size: 24px; color: var(--text); }
+        .sidebar-toggle { position: fixed; left: 15px; top: 15px; width: 45px; height: 45px; background: var(--panel); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 900; font-size: 24px; color: var(--text); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         
         /* --- POTATO MODE CSS --- */
         body.ultralow * { transition: none !important; animation: none !important; backdrop-filter: none !important; box-shadow: none !important; }
@@ -36,35 +36,39 @@
 
         .menu { background: var(--panel); padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); margin-top: 50px; }
         textarea { width: 100%; height: 60px; background: rgba(0,0,0,0.2); color: var(--text); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 12px; margin: 10px 0; box-sizing: border-box; resize: none; }
-        #output { background: rgba(0,0,0,0.2); padding: 12px; border-radius: 6px; border: 1px solid var(--accent); color: var(--accent); font-family: monospace; font-size: 11px; min-height: 20px; word-break: break-all; }
+        #output { background: rgba(0,0,0,0.2); padding: 12px; border-radius: 6px; border: 1px solid var(--accent); color: var(--accent); font-family: monospace; font-size: 11px; min-height: 20px; word-break: break-all; opacity: 0.9; }
         
         .btns-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
-        button { border: none; padding: 10px 14px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; font-size: 10px; display: flex; align-items: center; gap: 4px; background: var(--btn-bg); color: var(--btn-text); }
-        button:disabled { opacity: 0.4; cursor: not-allowed; }
+        button { border: none; padding: 10px 14px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; font-size: 10px; display: flex; align-items: center; gap: 4px; background: var(--btn-bg); color: var(--btn-text); border: 1px solid rgba(255,255,255,0.05); }
+        button:hover { filter: brightness(1.2); transform: translateY(-1px); }
+        button:disabled { opacity: 0.4; cursor: not-allowed; filter: grayscale(1); }
         .btn-reset { margin-left: auto; background: #c0392b !important; color: white !important; }
         
+        /* TIERS */
         #lista-tiers { display: flex; flex-direction: column; gap: 8px; }
-        .tier-row { display: flex; min-height: 110px; background: rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden; border: 1px solid transparent; }
-        .tier-sidebar { display: flex; align-items: stretch; background: rgba(0,0,0,0.2); }
+        .tier-row { display: flex; min-height: 110px; background: rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden; border: 1px solid transparent; backdrop-filter: blur(4px); }
+        .tier-sidebar { display: flex; align-items: stretch; background: rgba(0,0,0,0.2); border-right: 1px solid rgba(255,255,255,0.05); }
         .tier-handle { cursor: grab; width: 30px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #666; }
-        .color-strip { width: 8px; cursor: pointer; border: none; padding: 0; }
+        .color-strip { width: 8px; cursor: pointer; border: none; padding: 0; background: none; }
         .tier-label { width: 110px; display: flex; align-items: center; justify-content: center; padding: 10px; position: relative; color: #000; font-weight: 900; text-transform: uppercase; text-align: center; font-size: 12px; }
-        .btn-del { position: absolute; top: 4px; right: 4px; cursor: pointer; font-size: 9px; background: rgba(0,0,0,0.2); border-radius: 3px; color: white; border:none; }
+        .btn-del { position: absolute; top: 4px; right: 4px; cursor: pointer; font-size: 9px; background: rgba(0,0,0,0.2); border-radius: 3px; padding: 2px 4px; border: none; color: white; }
         
         .tier-content { flex-grow: 1; display: flex; flex-wrap: wrap; gap: 5px; padding: 10px; min-height: 100px; }
-        .card { width: 85px; background: #1f1f1f; border-radius: 4px; text-align: center; cursor: grab; border: 1px solid #333; position: relative; }
-        .card img { width: 100%; height: 115px; object-fit: cover; border-radius: 3px 3px 0 0; pointer-events: none; }
+        .card { width: 85px; background: #1f1f1f; border-radius: 4px; text-align: center; cursor: grab; border: 1px solid #333; position: relative; transition: transform 0.1s; }
+        .card img { width: 100%; height: 115px; object-fit: cover; border-radius: 3px 3px 0 0; display: block; pointer-events: none; }
         .card p { font-size: 8px; padding: 4px 2px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #ccc; }
-        .card.missing::after { content: "❌"; position: absolute; top: 2px; right: 2px; font-size: 14px; text-shadow: 0 0 3px black; }
+        .card.selected { border: 2px solid var(--pastel-blue); z-index: 10; box-shadow: 0 0 10px rgba(116, 185, 255, 0.5); }
+        .card.missing::after { content: "❌"; position: absolute; top: 2px; right: 2px; font-size: 14px; text-shadow: 0 0 3px black; z-index: 5; }
 
-        .sidebar-header { font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; font-size: 12px; }
+        .sidebar-header { font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
         .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 15px; }
-        .theme-btn { background: rgba(255,255,255,0.05); color: var(--text); border: 1px solid rgba(255,255,255,0.1); padding: 8px; font-size: 10px; }
+        .theme-btn { background: rgba(255,255,255,0.05); color: var(--text); border: 1px solid rgba(255,255,255,0.1); padding: 8px; font-size: 10px; width: 100%; text-align: center; }
         
-        .footer-area { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
-        #trash-zone { width: 130px; height: 50px; border: 2px dashed #ff7675; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #ff7675; font-size: 11px; font-weight: bold; }
-        .credits { opacity: 0.2; font-size: 10px; }
+        .footer-area { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding: 10px; }
+        #trash-zone { width: 130px; height: 50px; border: 2px dashed #ff7675; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #ff7675; font-weight: bold; font-size: 11px; }
+        .credits { opacity: 0.2; font-size: 10px; color: var(--text); }
         .no-export { display: none !important; }
+        .hidden-storage { display: none !important; }
     </style>
 </head>
 <body>
@@ -73,33 +77,42 @@
 <div class="sidebar-toggle" onclick="toggleSidebar()">&#9776;</div>
 
 <div id="sidebar">
-    <div class="sidebar-header">THEMES</div>
+    <div class="sidebar-header">🎨 Theme Presets</div>
     <div class="theme-grid">
-        <button class="theme-btn" onclick="applyTheme('dark')">Tuxn88</button>
-        <button class="theme-btn" onclick="applyTheme('miku')">Miku</button>
+        <button class="theme-btn" style="border: 1px solid #2ecc71; color: #2ecc71;" onclick="applyTheme('dark')">Tuxn88</button>
+        <button class="theme-btn" onclick="applyTheme('miku')">Hatsune Miku</button>
         <button class="theme-btn" onclick="applyTheme('hacker')">Hacker</button>
-        <button class="theme-btn" onclick="applyTheme('cyber')">Cyber</button>
+        <button class="theme-btn" onclick="applyTheme('cyber')">Cyberpunk</button>
+        <button class="theme-btn" onclick="applyTheme('basalt')">Basalt</button>
+        <button class="theme-btn" onclick="applyTheme('coffee')">Coffee</button>
+        <button class="theme-btn" onclick="applyTheme('lavender')">Lavender</button>
+        <button class="theme-btn" onclick="applyTheme('light')">Light</button>
     </div>
-    
-    <div class="sidebar-header">PERFORMANCE</div>
-    <button class="theme-btn" id="freezeBtn" style="width:100%; margin-bottom:5px;" onclick="toggleFreeze()">❄️ PERFORMANCE: OFF</button>
-    <button class="theme-btn" id="ultraBtn" style="width:100%; background:#e74c3c; color:white;" onclick="toggleUltraLow()">☢️ POTATO MODE: OFF</button>
+    <button class="theme-btn" style="background: var(--pastel-green); color: #000; margin-bottom: 15px; font-weight: bold;" onclick="randomHarmoniousTheme()">🔀 Randomize UI</button>
 
-    <div class="sidebar-header" style="margin-top:20px">CUSTOM COLORS</div>
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px;">
-        <input type="color" id="cfg-bg" oninput="updateUI()">
-        <input type="color" id="cfg-panel" oninput="updateUI()">
+    <div class="sidebar-header">⚡ Performance</div>
+    <button class="theme-btn" id="freezeBtn" style="margin-bottom:5px;" onclick="toggleFreeze()">❄️ PERFORMANCE: OFF</button>
+    <button class="theme-btn" id="ultraBtn" style="background:#e74c3c; color:white;" onclick="toggleUltraLow()">☢️ POTATO MODE: OFF</button>
+
+    <div class="sidebar-header" style="margin-top:20px">🛠️ Customization</div>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom: 10px;">
+        <div style="display:flex; flex-direction:column;"><input type="color" id="cfg-bg" oninput="updateUI()"><span style="font-size:9px">BG</span></div>
+        <div style="display:flex; flex-direction:column;"><input type="color" id="cfg-panel" oninput="updateUI()"><span style="font-size:9px">Panel</span></div>
+        <div style="display:flex; flex-direction:column;"><input type="color" id="cfg-text" oninput="updateUI()"><span style="font-size:9px">Text</span></div>
+        <div style="display:flex; flex-direction:column;"><input type="color" id="cfg-btn" oninput="updateUI()"><span style="font-size:9px">Btns</span></div>
     </div>
+    <input type="text" id="cfg-bg-img" placeholder="Background Image URL..." style="width:100%; font-size:10px; padding:5px; margin-bottom:5px;" oninput="updateUI()">
+    <input type="range" id="cfg-bg-dim" min="0" max="0.9" step="0.1" value="0" style="width:100%" oninput="updateUI()">
 </div>
 
 <div class="menu">
-    <textarea id="inputLista" placeholder="Name - URL"></textarea>
+    <textarea id="inputLista" placeholder="Character Name - Image URL"></textarea>
     <div class="btns-row">
         <button onclick="gerarCards()">📥 LOAD</button>
         <button onclick="adicionarTier()">➕ TIER</button>
-        <button onclick="randomPastelPalette()">🎨 COLORS</button>
+        <button onclick="randomPastelPalette()">🎨 TIER COLORS</button>
         <button onclick="salvarLocal()">💾 SAVE</button>
-        <button onclick="baixarImagem()">🖼️ PNG</button>
+        <button onclick="baixarImagem()">🖼️ EXPORT PNG</button>
         <button class="btn-reset" onclick="resetarTudo()">🔄 RESET</button>
     </div>
 </div>
@@ -107,22 +120,24 @@
 <div id="capture-area" style="padding: 10px;">
     <div id="lista-tiers"></div>
     <div id="reserva-container">
-        <h4 style="opacity:0.5; font-size:12px">Storage</h4>
-        <div id="reserva" class="tier-content"></div>
+        <h4 style="opacity:0.5; font-size:12px; margin-bottom:5px;">Storage</h4>
+        <div id="reserva" class="tier-content" style="background: rgba(0,0,0,0.1); border-radius: 8px; border: 1px dashed rgba(255,255,255,0.05);"></div>
     </div>
     <div class="footer-area">
         <div id="ui-actions" style="display:flex; gap:10px;">
-            <div id="trash-zone">TRASH</div>
-            <button style="background:#ff7675; color:white; border-radius:8px; border:none; padding:0 10px;" onclick="removeMarked()">❌ CLEAR X</button>
+            <div id="trash-zone">DROP TO DELETE</div>
+            <button style="background:#ff7675; color:white; border-radius:8px; border:none; padding:0 10px;" onclick="removeMarked()">❌ CLEAR ALL 'X'</button>
         </div>
         <div class="credits">by tuxn88</div>
     </div>
 </div>
 
 <div class="menu">
-    <button style="background:#3498db; color:white; width:100%; margin-bottom:5px;" onclick="gerarTextoMM()">🔄 REFRESH</button>
-    <button style="background:#2ecc71; color:white; width:100%;" onclick="copiarNomes()">📋 COPY $MM</button>
-    <div id="output" style="margin-top:10px">...</div>
+    <div style="display:flex; gap: 8px; margin-bottom: 10px;">
+        <button style="background: #3498db; color: white; flex: 1;" onclick="gerarTextoMM()">🔄 REFRESH LIST</button>
+        <button style="background: #2ecc71; color: white; flex: 2;" onclick="copiarNomes()">📋 COPY FOR $MM</button>
+    </div>
+    <div id="output">Output code will appear here...</div>
 </div>
 
 <script>
@@ -139,8 +154,28 @@
 
     function updateUI() {
         const root = document.documentElement;
-        root.style.setProperty('--bg', document.getElementById('cfg-bg').value);
-        root.style.setProperty('--panel', document.getElementById('cfg-panel').value);
+        const bg = document.getElementById('cfg-bg').value;
+        const panel = document.getElementById('cfg-panel').value;
+        const text = document.getElementById('cfg-text').value;
+        const btn = document.getElementById('cfg-btn').value;
+        const dim = document.getElementById('cfg-bg-dim').value;
+        const imgUrl = document.getElementById('cfg-bg-img').value;
+
+        root.style.setProperty('--bg', bg);
+        root.style.setProperty('--panel', panel);
+        root.style.setProperty('--text', text);
+        root.style.setProperty('--btn-bg', btn);
+        root.style.setProperty('--btn-text', isDark(btn) ? '#fff' : '#000');
+        root.style.setProperty('--bg-dim', dim);
+        root.style.setProperty('--bg-img', imgUrl ? `url('${imgUrl}')` : 'none');
+    }
+
+    function isDark(color) {
+        const hex = color.replace('#', '');
+        const r = parseInt(hex.substr(0,2), 16);
+        const g = parseInt(hex.substr(2,2), 16);
+        const b = parseInt(hex.substr(4,2), 16);
+        return ((r*0.299) + (g*0.587) + (b*0.114)) < 128;
     }
 
     function toggleFreeze() {
@@ -168,9 +203,7 @@
     function updateSortables() {
         const isPotato = document.body.classList.contains('ultralow');
         const anim = isPotato ? 0 : 150;
-        sortables.forEach(s => {
-            s.options.animation = anim;
-        });
+        sortables.forEach(s => { s.options.animation = anim; });
     }
 
     function fixUrl(url) {
@@ -183,19 +216,49 @@
             group: 'chars', 
             animation: document.body.classList.contains('ultralow') ? 0 : 150, 
             multiDrag: true, 
-            selectedClass: 'selected' 
+            selectedClass: 'selected',
+            ghostClass: 'ghost'
         });
         sortables.push(s);
     }
 
-    function renderCard(p, container) {
-        const isGif = p.url.toLowerCase().includes('.gif');
-        const card = document.createElement('div');
-        card.className = p.missing ? 'card missing' : 'card';
-        card.setAttribute('data-nome', p.nome);
-        card.setAttribute('data-is-gif', isGif);
-        card.innerHTML = `<img src="${fixUrl(p.url)}" loading="lazy"><p>${p.nome}</p>`;
-        container.appendChild(card);
+    function applyTheme(mode) {
+        const themes = {
+            dark:     { bg: '#0d0d0d', panel: '#161616', text: '#f0f0f0', btn: '#333333', accent: '#2ecc71' },
+            light:    { bg: '#f5f5f5', panel: '#ffffff', text: '#2d3436', btn: '#dfe6e9', accent: '#3498db' },
+            hacker:   { bg: '#000000', panel: '#0a0a0a', text: '#00ff41', btn: '#003300', accent: '#00ff41' },
+            basalt:   { bg: '#2c3e50', panel: '#34495e', text: '#ecf0f1', btn: '#1a252f', accent: '#e67e22' },
+            miku:     { bg: '#1d2a2e', panel: '#e6f7f6', text: '#39c5bb', btn: '#39c5bb', accent: '#39c5bb' },
+            cyber:    { bg: '#0b0014', panel: '#1a002e', text: '#00f2ff', btn: '#ff0055', accent: '#ff0055' },
+            coffee:   { bg: '#2b2118', panel: '#3e3024', text: '#d7ccc8', btn: '#5d4037', accent: '#8d6e63' },
+            lavender: { bg: '#2d2438', panel: '#3d3051', text: '#e0d1f7', btn: '#9b59b6', accent: '#d1b3ff' }
+        };
+        const t = themes[mode];
+        document.getElementById('cfg-bg').value = t.bg;
+        document.getElementById('cfg-panel').value = t.panel;
+        document.getElementById('cfg-text').value = t.text;
+        document.getElementById('cfg-btn').value = t.btn;
+        document.documentElement.style.setProperty('--accent', t.accent);
+        updateUI();
+    }
+
+    function hslToHex(h, s, l) {
+        l /= 100; const a = s * Math.min(l, 1 - l) / 100;
+        const f = n => {
+            const k = (n + h / 30) % 12;
+            const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+            return Math.round(255 * color).toString(16).padStart(2, '0');
+        };
+        return `#${f(0)}${f(8)}${f(4)}`;
+    }
+
+    function randomHarmoniousTheme() {
+        const hue = Math.floor(Math.random() * 360);
+        document.getElementById('cfg-bg').value = hslToHex(hue, 30, 10);
+        document.getElementById('cfg-panel').value = hslToHex(hue, 25, 15);
+        document.getElementById('cfg-text').value = hslToHex(hue, 10, 90);
+        document.getElementById('cfg-btn').value = hslToHex(hue, 40, 30);
+        updateUI();
     }
 
     function adicionarTier(nome = "NEW TIER", cor = "#74b9ff") {
@@ -217,34 +280,147 @@
         row.querySelector('.tier-label').style.background = input.value;
     }
 
+    function randomPastelPalette() {
+        const rows = document.querySelectorAll('.tier-row');
+        const baseHue = Math.floor(Math.random() * 360);
+        rows.forEach((row, index) => {
+            const hexColor = hslToHex((baseHue + (index * 30)) % 360, 70, 75);
+            const input = row.querySelector('.color-strip');
+            input.value = hexColor;
+            updateTierColor(input);
+        });
+    }
+
     function gerarCards() {
         const linhas = document.getElementById('inputLista').value.split('\n');
+        const novosNomes = [];
         linhas.forEach(linha => {
             if (linha.includes(' - ')) {
                 const [nome, url] = linha.split(' - ').map(s => s.trim());
-                renderCard({nome, url, missing: false}, reserva);
+                novosNomes.push(nome);
+                const existente = document.querySelector(`[data-nome="${nome}"]`);
+                if (existente) {
+                    existente.querySelector('img').src = fixUrl(url);
+                    existente.classList.remove('missing');
+                } else {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.setAttribute('data-nome', nome);
+                    card.setAttribute('data-is-gif', url.toLowerCase().includes('.gif'));
+                    card.innerHTML = `<img src="${fixUrl(url)}" loading="lazy"><p>${nome}</p>`;
+                    reserva.appendChild(card);
+                }
             }
         });
+        if(novosNomes.length > 0) {
+            document.querySelectorAll('.card').forEach(card => {
+                if (!novosNomes.includes(card.getAttribute('data-nome'))) card.classList.add('missing');
+            });
+        }
         document.getElementById('inputLista').value = "";
     }
 
-    function aplicarEstiloIncial() {
-        document.getElementById('cfg-bg').value = "#0d0d0d";
-        document.getElementById('cfg-panel').value = "#161616";
-        updateUI();
+    async function baixarImagem() {
+        const ui = document.getElementById('ui-actions');
+        const storage = document.getElementById('reserva-container');
+        const isEmpty = reserva.children.length === 0;
+        ui.classList.add('no-export');
+        if(isEmpty) storage.classList.add('hidden-storage');
+        const area = document.getElementById('capture-area');
+        const canvas = await html2canvas(area, { backgroundColor: null, useCORS: true, scale: 2 });
+        const link = document.createElement('a');
+        link.download = 'mudae-tier-tuxn88.png';
+        link.href = canvas.toDataURL();
+        link.click();
+        ui.classList.remove('no-export');
+        storage.classList.remove('hidden-storage');
     }
 
-    function applyTheme(m) {
-        const t = { dark: ["#0d0d0d", "#161616"], miku: ["#1d2a2e", "#e6f7f6"], hacker: ["#000", "#0a0a0a"], cyber: ["#0b0014", "#1a002e"] };
-        document.getElementById('cfg-bg').value = t[m][0];
-        document.getElementById('cfg-panel').value = t[m][1];
-        updateUI();
+    function salvarLocal() {
+        const dados = {
+            config: {
+                bg: document.getElementById('cfg-bg').value,
+                panel: document.getElementById('cfg-panel').value,
+                text: document.getElementById('cfg-text').value,
+                btn: document.getElementById('cfg-btn').value,
+                bgImg: document.getElementById('cfg-bg-img').value,
+                bgDim: document.getElementById('cfg-bg-dim').value,
+                accent: document.documentElement.style.getPropertyValue('--accent')
+            },
+            tiers: Array.from(document.querySelectorAll('.tier-row')).map(row => ({
+                nome: row.querySelector('.tier-label span').innerText,
+                cor: row.querySelector('.color-strip').value,
+                personagens: Array.from(row.querySelectorAll('.card')).map(c => ({
+                    nome: c.getAttribute('data-nome'),
+                    url: c.querySelector('img').src
+                }))
+            })),
+            reserva: Array.from(reserva.querySelectorAll('.card')).map(c => ({
+                nome: c.getAttribute('data-nome'),
+                url: c.querySelector('img').src
+            }))
+        };
+        localStorage.setItem('mudaeFinal_v6', JSON.stringify(dados));
+        alert("Saved!");
     }
+
+    function carregarLocal() {
+        const salvo = localStorage.getItem('mudaeFinal_v6');
+        if (!salvo) { adicionarTier("tuxn88", "#2dc7b2"); applyTheme('dark'); return; }
+        const d = JSON.parse(salvo);
+        if(d.config) {
+            document.getElementById('cfg-bg').value = d.config.bg;
+            document.getElementById('cfg-panel').value = d.config.panel;
+            document.getElementById('cfg-text').value = d.config.text || '#f0f0f0';
+            document.getElementById('cfg-btn').value = d.config.btn || '#333';
+            document.getElementById('cfg-bg-img').value = d.config.bgImg || "";
+            document.getElementById('cfg-bg-dim').value = d.config.bgDim || 0;
+            updateUI();
+        }
+        d.tiers.forEach(t => {
+            adicionarTier(t.nome, t.cor);
+            const container = listaTiers.lastElementChild.querySelector('.tier-content');
+            t.personagens.forEach(p => renderCard(p, container));
+        });
+        d.reserva.forEach(p => renderCard(p, reserva));
+    }
+
+    function renderCard(p, container) {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.setAttribute('data-nome', p.nome);
+        card.setAttribute('data-is-gif', p.url.toLowerCase().includes('.gif'));
+        card.innerHTML = `<img src="${fixUrl(p.url)}" loading="lazy"><p>${p.nome}</p>`;
+        container.appendChild(card);
+    }
+
+    function gerarTextoMM() {
+        const rows = document.querySelectorAll('.tier-row');
+        let nomesMM = [];
+        rows.forEach(row => {
+            row.querySelectorAll('.card').forEach(c => {
+                nomesMM.push(c.getAttribute('data-nome').split('|')[0].trim());
+            });
+        });
+        const result = nomesMM.length === 0 ? "Empty Tiers!" : nomesMM.join(' $ ');
+        document.getElementById('output').innerText = result;
+        return result;
+    }
+
+    function copiarNomes() {
+        const texto = gerarTextoMM();
+        if (texto && texto !== "Empty Tiers!") {
+            navigator.clipboard.writeText(texto).then(() => alert("Copied!"));
+        }
+    }
+
+    function removeMarked() { if(confirm("Remove all ❌?")) document.querySelectorAll('.card.missing').forEach(c => c.remove()); }
+    function resetarTudo() { if(confirm("Reset everything?")) { localStorage.removeItem('mudaeFinal_v6'); location.reload(); } }
 
     new Sortable(listaTiers, { handle: '.tier-handle', animation: 150 });
     new Sortable(document.getElementById('trash-zone'), { group: 'chars', onAdd: (e) => { (e.items.length > 0 ? e.items : [e.item]).forEach(i => i.remove()); } });
     configurarDrag(reserva);
-    window.onload = () => { adicionarTier("tuxn88", "#2dc7b2"); aplicarEstiloIncial(); };
+    window.onload = carregarLocal;
 </script>
 </body>
 </html>

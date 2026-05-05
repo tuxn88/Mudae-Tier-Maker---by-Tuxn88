@@ -46,9 +46,11 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         
-        .sidebar-header { font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        /* PERFORMANCE EXTREME */
+        body.ultralow * { transition: none !important; animation: none !important; backdrop-filter: none !important; box-shadow: none !important; }
+        body.ultralow img { image-rendering: pixelated !important; filter: contrast(150%) grayscale(100%) !important; opacity: 0.7; }
         
-        /* MAIN MENU */
+        .sidebar-header { font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
         .menu { background: var(--panel); padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); margin-top: 50px; }
         
         textarea, #output { 
@@ -56,23 +58,14 @@
             border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 12px; box-sizing: border-box; 
         }
         textarea { height: 60px; margin: 10px 0; resize: none; }
-        #output { 
-            min-height: 20px; word-break: break-all; font-family: monospace; font-size: 11px; 
-            color: var(--accent); border: 1px solid var(--accent); opacity: 0.9; 
-        }
+        #output { min-height: 20px; word-break: break-all; font-family: monospace; font-size: 11px; color: var(--accent); border: 1px solid var(--accent); opacity: 0.9; }
         
-        /* BUTTONS */
         .btns-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
-        button { 
-            border: none; padding: 10px 14px; border-radius: 6px; cursor: pointer; 
-            font-weight: bold; transition: 0.2s; font-size: 10px; display: flex; 
-            align-items: center; gap: 4px; background: var(--btn-bg); color: var(--btn-text);
-            border: 1px solid rgba(255,255,255,0.05);
-        }
+        button { border: none; padding: 10px 14px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; font-size: 10px; display: flex; align-items: center; gap: 4px; background: var(--btn-bg); color: var(--btn-text); border: 1px solid rgba(255,255,255,0.05); }
         button:hover { filter: brightness(1.2); transform: translateY(-1px); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
         .btn-reset { margin-left: auto; background: #c0392b !important; color: white !important; }
         
-        /* TIERS */
         #lista-tiers { display: flex; flex-direction: column; gap: 8px; }
         .tier-row { display: flex; min-height: 110px; background: rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden; border: 1px solid transparent; backdrop-filter: blur(4px); }
         .tier-sidebar { display: flex; align-items: stretch; background: rgba(0,0,0,0.2); border-right: 1px solid rgba(255,255,255,0.05); }
@@ -82,23 +75,16 @@
         .btn-del { position: absolute; top: 4px; right: 4px; cursor: pointer; font-size: 9px; background: rgba(0,0,0,0.2); border-radius: 3px; padding: 2px 4px; border: none; color: white; }
         
         .tier-content { flex-grow: 1; display: flex; flex-wrap: wrap; gap: 5px; padding: 10px; min-height: 100px; }
-        
-        /* CARDS */
         .card { width: 85px; background: #1f1f1f; border-radius: 4px; text-align: center; cursor: grab; border: 1px solid #333; position: relative; transition: transform 0.1s; }
         .card img { width: 100%; height: 115px; object-fit: cover; border-radius: 3px 3px 0 0; display: block; pointer-events: none; }
         .card p { font-size: 8px; padding: 4px 2px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #ccc; }
-        .card.selected { border: 2px solid var(--pastel-blue); z-index: 10; box-shadow: 0 0 10px rgba(116, 185, 255, 0.5); }
         .card.missing::after { content: "❌"; position: absolute; top: 2px; right: 2px; font-size: 14px; text-shadow: 0 0 3px black; z-index: 5; }
 
-        /* SIDEBAR INTERNALS */
         .custom-group { margin-bottom: 15px; display: flex; flex-direction: column; gap: 8px; }
         .custom-group label { font-size: 10px; opacity: 0.7; text-transform: uppercase; font-weight: bold; }
         .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
         .theme-btn { background: rgba(255,255,255,0.05); color: var(--text); border: 1px solid rgba(255,255,255,0.1); width: 100%; text-align: center; }
         
-        /* UTILS */
-        .ghost { opacity: 0.1; }
-        body.freeze-mode img { image-rendering: -webkit-optimize-contrast; filter: saturate(0.8); }
         .footer-area { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding: 10px; }
         #trash-zone { width: 130px; height: 50px; border: 2px dashed #ff7675; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #ff7675; font-weight: bold; font-size: 11px; }
         .credits { opacity: 0.2; font-size: 10px; color: var(--text); }
@@ -109,7 +95,6 @@
 <body>
 
 <div id="overlay" onclick="toggleSidebar()"></div>
-
 <div class="sidebar-toggle" onclick="toggleSidebar()">&#9776;</div>
 
 <div id="sidebar">
@@ -148,6 +133,7 @@
 
     <div class="sidebar-header">⚡ System</div>
     <button class="theme-btn" id="freezeBtn" onclick="toggleFreeze()">❄️ PERFORMANCE: OFF</button>
+    <button class="theme-btn" id="ultraBtn" style="background: #e74c3c; color: white; margin-top: 5px;" onclick="toggleUltraLow()">☢️ ULTRALOW (POTATO MODE): OFF</button>
 </div>
 
 <div class="menu">
@@ -164,12 +150,10 @@
 
 <div id="capture-area" style="padding: 10px;">
     <div id="lista-tiers"></div>
-    
     <div id="reserva-container">
         <h4 style="margin-bottom: 5px; opacity: 0.6; font-size: 12px;">Storage</h4>
         <div id="reserva" class="tier-content" style="background: rgba(0,0,0,0.1); border-radius: 8px; border: 1px dashed rgba(255,255,255,0.05);"></div>
     </div>
-
     <div class="footer-area">
         <div class="action-zone" id="ui-actions">
             <div id="trash-zone">DROP TO DELETE</div>
@@ -225,6 +209,27 @@
         return ((r*0.299) + (g*0.587) + (b*0.114)) < 128;
     }
 
+    function toggleFreeze() {
+        document.body.classList.toggle('freeze-mode');
+        const btn = document.getElementById('freezeBtn');
+        btn.textContent = document.body.classList.contains('freeze-mode') ? '🔥 PERFORMANCE: ON' : '❄️ PERFORMANCE: OFF';
+    }
+
+    function toggleUltraLow() {
+        const isUltra = document.body.classList.toggle('ultralow');
+        const ultraBtn = document.getElementById('ultraBtn');
+        const freezeBtn = document.getElementById('freezeBtn');
+
+        if (isUltra) {
+            if (!document.body.classList.contains('freeze-mode')) toggleFreeze();
+            freezeBtn.disabled = true;
+            ultraBtn.textContent = "☢️ ULTRALOW (POTATO MODE): ON";
+        } else {
+            freezeBtn.disabled = false;
+            ultraBtn.textContent = "☢️ ULTRALOW (POTATO MODE): OFF";
+        }
+    }
+
     function applyTheme(mode) {
         const themes = {
             dark:     { bg: '#0d0d0d', panel: '#161616', text: '#f0f0f0', btn: '#333333', accent: '#2ecc71' },
@@ -245,16 +250,6 @@
         updateUI();
     }
 
-    function randomHarmoniousTheme() {
-        const hue = Math.floor(Math.random() * 360);
-        document.getElementById('cfg-bg').value = hslToHex(hue, 30, 10);
-        document.getElementById('cfg-panel').value = hslToHex(hue, 25, 15);
-        document.getElementById('cfg-text').value = hslToHex(hue, 10, 90);
-        document.getElementById('cfg-btn').value = hslToHex(hue, 40, 30);
-        document.documentElement.style.setProperty('--accent', hslToHex(hue, 60, 50));
-        updateUI();
-    }
-
     function hslToHex(h, s, l) {
         l /= 100; const a = s * Math.min(l, 1 - l) / 100;
         const f = n => {
@@ -265,20 +260,14 @@
         return `#${f(0)}${f(8)}${f(4)}`;
     }
 
-    async function baixarImagem() {
-        const ui = document.getElementById('ui-actions');
-        const storage = document.getElementById('reserva-container');
-        const isEmpty = reserva.children.length === 0;
-        ui.classList.add('no-export');
-        if(isEmpty) storage.classList.add('hidden-storage');
-        const area = document.getElementById('capture-area');
-        const canvas = await html2canvas(area, { backgroundColor: null, useCORS: true, scale: 2 });
-        const link = document.createElement('a');
-        link.download = 'mudae-tier-tuxn88.png';
-        link.href = canvas.toDataURL();
-        link.click();
-        ui.classList.remove('no-export');
-        storage.classList.remove('hidden-storage');
+    function randomHarmoniousTheme() {
+        const hue = Math.floor(Math.random() * 360);
+        document.getElementById('cfg-bg').value = hslToHex(hue, 30, 10);
+        document.getElementById('cfg-panel').value = hslToHex(hue, 25, 15);
+        document.getElementById('cfg-text').value = hslToHex(hue, 10, 90);
+        document.getElementById('cfg-btn').value = hslToHex(hue, 40, 30);
+        document.documentElement.style.setProperty('--accent', hslToHex(hue, 60, 50));
+        updateUI();
     }
 
     function fixUrl(url) {
@@ -286,20 +275,14 @@
         return url;
     }
 
-    new Sortable(listaTiers, { handle: '.tier-handle', animation: 150, ghostClass: 'ghost' });
+    new Sortable(listaTiers, { handle: '.tier-handle', animation: 150 });
     function configurarDrag(el) {
-        new Sortable(el, { group: 'chars', animation: 150, multiDrag: true, selectedClass: 'selected', ghostClass: 'ghost',
-            onStart: function() { this.options.animation = document.body.classList.contains('freeze-mode') ? 0 : 150; }
+        new Sortable(el, { group: 'chars', animation: 150, multiDrag: true, selectedClass: 'selected',
+            onStart: function() { this.options.animation = (document.body.classList.contains('freeze-mode')) ? 0 : 150; }
         });
     }
     new Sortable(trashZone, { group: 'chars', onAdd: (evt) => { (evt.items.length > 0 ? evt.items : [evt.item]).forEach(el => el.remove()); } });
     configurarDrag(reserva);
-
-    function toggleFreeze() {
-        document.body.classList.toggle('freeze-mode');
-        const btn = document.getElementById('freezeBtn');
-        btn.textContent = document.body.classList.contains('freeze-mode') ? '🔥 PERFORMANCE: ON' : '❄️ PERFORMANCE: OFF';
-    }
 
     function adicionarTier(nome = "NEW TIER", cor = "#74b9ff") {
         const row = document.createElement('div');
@@ -387,6 +370,22 @@
         if(confirm("Reset EVERYTHING?")) { localStorage.removeItem('mudaeFinal_v6'); location.reload(); }
     }
 
+    async function baixarImagem() {
+        const ui = document.getElementById('ui-actions');
+        const storage = document.getElementById('reserva-container');
+        const isEmpty = reserva.children.length === 0;
+        ui.classList.add('no-export');
+        if(isEmpty) storage.classList.add('hidden-storage');
+        const area = document.getElementById('capture-area');
+        const canvas = await html2canvas(area, { backgroundColor: null, useCORS: true, scale: 2 });
+        const link = document.createElement('a');
+        link.download = 'mudae-tier-tuxn88.png';
+        link.href = canvas.toDataURL();
+        link.click();
+        ui.classList.remove('no-export');
+        storage.classList.remove('hidden-storage');
+    }
+
     function salvarLocal() {
         const dados = {
             config: {
@@ -421,7 +420,6 @@
         const salvo = localStorage.getItem('mudaeFinal_v6');
         if (!salvo) { adicionarTier("tuxn88", "#2dc7b2"); applyTheme('dark'); return; }
         const d = JSON.parse(salvo);
-        
         if(d.config) {
             document.getElementById('cfg-bg').value = d.config.bg;
             document.getElementById('cfg-panel').value = d.config.panel;
@@ -432,7 +430,6 @@
             document.documentElement.style.setProperty('--accent', d.config.accent || '#2ecc71');
             updateUI();
         }
-
         d.tiers.forEach(t => {
             adicionarTier(t.nome, t.cor);
             const container = listaTiers.lastElementChild.querySelector('.tier-content');

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -48,7 +48,7 @@
         
         .sidebar-header { font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
         
-        /* MENU PRINCIPAL */
+        /* MAIN MENU */
         .menu { background: var(--panel); padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); margin-top: 50px; }
         
         textarea, #output { 
@@ -61,7 +61,7 @@
             color: var(--accent); border: 1px solid var(--accent); opacity: 0.9; 
         }
         
-        /* BOTÕES */
+        /* BUTTONS */
         .btns-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
         button { 
             border: none; padding: 10px 14px; border-radius: 6px; cursor: pointer; 
@@ -96,7 +96,7 @@
         .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
         .theme-btn { background: rgba(255,255,255,0.05); color: var(--text); border: 1px solid rgba(255,255,255,0.1); width: 100%; text-align: center; }
         
-        /* UTILITARIOS */
+        /* UTILS */
         .ghost { opacity: 0.1; }
         body.freeze-mode img { image-rendering: -webkit-optimize-contrast; filter: saturate(0.8); }
         .footer-area { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding: 10px; }
@@ -113,49 +113,49 @@
 <div class="sidebar-toggle" onclick="toggleSidebar()">&#9776;</div>
 
 <div id="sidebar">
-    <div class="sidebar-header">🎨 Presets de Temas</div>
+    <div class="sidebar-header">🎨 Theme Presets</div>
     <div class="custom-group">
         <div class="theme-grid">
             <button class="theme-btn" style="border: 1px solid #2ecc71; color: #2ecc71;" onclick="applyTheme('dark')">Tuxn88</button>
             <button class="theme-btn" onclick="applyTheme('miku')">Hatsune Miku</button>
             <button class="theme-btn" onclick="applyTheme('hacker')">Hacker</button>
             <button class="theme-btn" onclick="applyTheme('cyber')">Cyberpunk</button>
-            <button class="theme-btn" onclick="applyTheme('basalt')">Basalto</button>
+            <button class="theme-btn" onclick="applyTheme('basalt')">Basalt</button>
             <button class="theme-btn" onclick="applyTheme('coffee')">Coffee</button>
             <button class="theme-btn" onclick="applyTheme('lavender')">Lavender</button>
             <button class="theme-btn" onclick="applyTheme('light')">Light</button>
         </div>
-        <button class="theme-btn" style="background: var(--pastel-green); color: #000; margin-top:5px; font-weight: bold;" onclick="randomHarmoniousTheme()">🔀 Modo Aleatório</button>
+        <button class="theme-btn" style="background: var(--pastel-green); color: #000; margin-top:5px; font-weight: bold;" onclick="randomHarmoniousTheme()">🔀 Randomize UI</button>
     </div>
 
-    <div class="sidebar-header">🛠️ Customização</div>
+    <div class="sidebar-header">🛠️ Customization</div>
     <div class="custom-group">
-        <label>Cores</label>
+        <label>Colors</label>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-            <div style="display:flex; flex-direction:column;"><input type="color" id="cfg-bg" oninput="updateUI()"><span style="font-size:9px">Fundo</span></div>
-            <div style="display:flex; flex-direction:column;"><input type="color" id="cfg-panel" oninput="updateUI()"><span style="font-size:9px">Menus</span></div>
-            <div style="display:flex; flex-direction:column;"><input type="color" id="cfg-text" oninput="updateUI()"><span style="font-size:9px">Texto</span></div>
-            <div style="display:flex; flex-direction:column;"><input type="color" id="cfg-btn" oninput="updateUI()"><span style="font-size:9px">Botões</span></div>
+            <div style="display:flex; flex-direction:column;"><input type="color" id="cfg-bg" oninput="updateUI()"><span style="font-size:9px">Background</span></div>
+            <div style="display:flex; flex-direction:column;"><input type="color" id="cfg-panel" oninput="updateUI()"><span style="font-size:9px">Panel</span></div>
+            <div style="display:flex; flex-direction:column;"><input type="color" id="cfg-text" oninput="updateUI()"><span style="font-size:9px">Text</span></div>
+            <div style="display:flex; flex-direction:column;"><input type="color" id="cfg-btn" oninput="updateUI()"><span style="font-size:9px">Buttons</span></div>
         </div>
     </div>
 
     <div class="custom-group">
-        <label>Imagem de Fundo</label>
-        <input type="text" id="cfg-bg-img" placeholder="Link da imagem..." style="font-size: 11px; padding: 8px; background: rgba(0,0,0,0.3); border: 1px solid #444; color: #fff;" oninput="updateUI()">
-        <label>Escurecer Fundo</label>
+        <label>Background Image</label>
+        <input type="text" id="cfg-bg-img" placeholder="Image URL..." style="font-size: 11px; padding: 8px; background: rgba(0,0,0,0.3); border: 1px solid #444; color: #fff;" oninput="updateUI()">
+        <label>Background Dimmer</label>
         <input type="range" id="cfg-bg-dim" min="0" max="0.9" step="0.1" value="0" oninput="updateUI()">
     </div>
 
-    <div class="sidebar-header">⚡ Sistema</div>
+    <div class="sidebar-header">⚡ System</div>
     <button class="theme-btn" id="freezeBtn" onclick="toggleFreeze()">❄️ PERFORMANCE: OFF</button>
 </div>
 
 <div class="menu">
-    <textarea id="inputLista" placeholder="Nome - URL"></textarea>
+    <textarea id="inputLista" placeholder="Character Name - Image URL"></textarea>
     <div class="btns-row">
         <button onclick="gerarCards()">📥 LOAD</button>
         <button onclick="adicionarTier()">➕ TIER</button>
-        <button onclick="randomPastelPalette()">🎨 CORES TIER</button>
+        <button onclick="randomPastelPalette()">🎨 TIER COLORS</button>
         <button onclick="salvarLocal()">💾 SAVE</button>
         <button onclick="baixarImagem()">🖼️ EXPORT PNG</button>
         <button class="btn-reset" onclick="resetarTudo()">🔄 RESET</button>
@@ -181,10 +181,10 @@
 
 <div class="menu">
     <div style="display:flex; gap: 8px; margin-bottom: 10px;">
-        <button style="background: #3498db; color: white; flex: 1;" onclick="gerarTextoMM()">🔄 ATUALIZAR LISTA</button>
-        <button style="background: #2ecc71; color: white; flex: 2;" onclick="copiarNomes()">📋 COPIAR PARA $MM</button>
+        <button style="background: #3498db; color: white; flex: 1;" onclick="gerarTextoMM()">🔄 REFRESH LIST</button>
+        <button style="background: #2ecc71; color: white; flex: 2;" onclick="copiarNomes()">📋 COPY FOR $MM</button>
     </div>
-    <div id="output">...</div>
+    <div id="output">Output code will appear here...</div>
 </div>
 
 <script>
@@ -301,7 +301,7 @@
         btn.textContent = document.body.classList.contains('freeze-mode') ? '🔥 PERFORMANCE: ON' : '❄️ PERFORMANCE: OFF';
     }
 
-    function adicionarTier(nome = "NOVA TIER", cor = "#74b9ff") {
+    function adicionarTier(nome = "NEW TIER", cor = "#74b9ff") {
         const row = document.createElement('div');
         row.className = 'tier-row';
         row.style.borderColor = cor;
@@ -367,24 +367,24 @@
                 nomesMM.push(c.getAttribute('data-nome').split('|')[0].trim());
             });
         });
-        const result = nomesMM.length === 0 ? "Tiers vazios!" : nomesMM.join(' $ ');
+        const result = nomesMM.length === 0 ? "Empty Tiers!" : nomesMM.join(' $ ');
         document.getElementById('output').innerText = result;
         return result;
     }
 
     function copiarNomes() {
         const texto = gerarTextoMM();
-        if (texto && texto !== "Tiers vazios!") {
-            navigator.clipboard.writeText(texto).then(() => alert("Copiado!"));
+        if (texto && texto !== "Empty Tiers!") {
+            navigator.clipboard.writeText(texto).then(() => alert("Copied!"));
         }
     }
 
     function removeMarked() {
-        if(confirm("Remover ❌?")) document.querySelectorAll('.card.missing').forEach(c => c.remove());
+        if(confirm("Remove marked characters (❌)?")) document.querySelectorAll('.card.missing').forEach(c => c.remove());
     }
 
     function resetarTudo() {
-        if(confirm("Resetar TUDO?")) { localStorage.removeItem('mudaeFinal_v6'); location.reload(); }
+        if(confirm("Reset EVERYTHING?")) { localStorage.removeItem('mudaeFinal_v6'); location.reload(); }
     }
 
     function salvarLocal() {
@@ -414,12 +414,12 @@
             }))
         };
         localStorage.setItem('mudaeFinal_v6', JSON.stringify(dados));
-        alert("Salvo!");
+        alert("Saved!");
     }
 
     function carregarLocal() {
         const salvo = localStorage.getItem('mudaeFinal_v6');
-        if (!salvo) { adicionarTier("FAVORITOS", "#39c5bb"); applyTheme('dark'); return; }
+        if (!salvo) { adicionarTier("tuxn88", "#2dc7b2"); applyTheme('dark'); return; }
         const d = JSON.parse(salvo);
         
         if(d.config) {

@@ -94,8 +94,10 @@
     const listaTiers = document.getElementById('lista-tiers');
     const reserva = document.getElementById('reserva');
     const trashZone = document.getElementById('trash-zone');
+    
+    // Variável para controlar a velocidade da animação[cite: 1]
+    let animSpeed = 250; 
 
-    // Função para burlar o bloqueio da Mudae
     function fixUrl(url) {
         if (url && url.includes('mudae.net')) {
             return 'https://images.weserv.nl/?url=' + encodeURIComponent(url.replace('https://', '')) + '&n=-1';
@@ -108,10 +110,15 @@
     function configurarDrag(el) {
         new Sortable(el, { 
             group: 'chars', 
-            animation: 150, 
+            // Usa a variável animSpeed para permitir desativar animação[cite: 1]
+            animation: animSpeed, 
             multiDrag: true, 
             selectedClass: 'selected',
-            ghostClass: 'ghost'
+            ghostClass: 'ghost',
+            onStart: function() {
+                // Atualiza a velocidade antes de começar o arraste[cite: 1, 2]
+                this.options.animation = document.body.classList.contains('freeze-mode') ? 0 : 250;
+            }
         });
     }
 
@@ -128,7 +135,10 @@
     function toggleFreeze() {
         document.body.classList.toggle('freeze-mode');
         const btn = document.getElementById('freezeBtn');
-        btn.textContent = document.body.classList.contains('freeze-mode') ? '🔥 NORMAL MODE' : '❄️ PERFORMANCE';
+        const isPerf = document.body.classList.contains('freeze-mode');
+        btn.textContent = isPerf ? '🔥 NORMAL MODE' : '❄️ PERFORMANCE';
+        // Atualiza a variável global de animação[cite: 1, 2]
+        animSpeed = isPerf ? 0 : 250; 
     }
 
     function adicionarTier(nome = "NEW TIER", cor = "#ff7f7f") {

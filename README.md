@@ -1,7 +1,7 @@
 # Mudae-Tier-Maker---by-Tuxn88
 Este projeto foi desenvolvido inicialmente para uso pessoal, com o objetivo de facilitar a gestão e visualização do meu próprio harem. Decidi disponibilizá-lo de forma pública para que outras pessoas também possam organizar suas coleções de maneira prática, sem complicações.
 
-:tools: **Mudae Tier Maker - by Tuxn88**
+🛠️ **Mudae Tier Maker - by Tuxn88**
 Patch de Atualização (ver. 1.6)
 
 
@@ -14,7 +14,7 @@ Patch de Atualização (ver. 1.6)
 
 :wastebasket: **Zona de Descarte (Trash):** Adicionada uma lixeira funcional no rodapé. Arraste personagens (uma ou várias de uma vez) para lá para removê-las permanentemente da sua coleção.
 
-:zap:** Limpeza Rápida:** Novo botão REMOVE ALL 'X' ao lado da lixeira para deletar instantaneamente todas as personagens que não fazem mais parte do seu harem atual.
+:zap: **Limpeza Rápida:** Novo botão REMOVE ALL 'X' ao lado da lixeira para deletar instantaneamente todas as personagens que não fazem mais parte do seu harem atual.
 
 :snowflake: **Modo Performance:** Novo botão PERFORMANCE para ajudar usuários mobile ou com harems gigantescos; ele otimiza a renderização de imagens e GIFs para reduzir o lag.
 

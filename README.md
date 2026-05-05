@@ -1,3 +1,45 @@
+=======================================================================
+
+🛠️ **[Mudae Tier Maker - by Tuxn88](https://tuxn88.github.io/Mudae-Tier-Maker---by-Tuxn88/)**
+Patch de Atualização (ver. 2.1)
+
+
+**O que há de novo?**
+
+
+🎨 **Interface com Sidebar:** O painel de customização agora é um menu lateral retrátil (☰). Ele libera espaço na tela e fecha automaticamente ao clicar fora, deixando o visual limpo para as suas tiers.
+
+🎭 **Presets de Temas Premium:** 8 temas prontos com um clique! Incluindo o exclusivo **Tuxn88** (dark clássico), **Hatsune Miku (Fosco)**, Cyberpunk, Coffee e modo Hacker.
+
+🎲 **Modo Aleatório Harmônico:** Novo botão que gera uma paleta de cores completa (fundo, painéis e botões) com cores que realmente combinam entre si, garantindo um design profissional sempre.
+
+🖼️ **Dimmer de Fundo:** Adicionada a opção de colocar imagens via URL no fundo com um controle de brilho (slider), para que a imagem não atrapalhe a visão dos personagens.
+
+🕹️ **Botões Adaptativos:** Todos os botões do site agora seguem as cores do tema escolhido e mudam a cor do texto automaticamente para garantir o melhor contraste e leitura.
+
+✨ **Exportação Inteligente:** No PNG salvo, a caixa de **Storage** agora desaparece automaticamente se estiver vazia, garantindo que sua imagem final foque apenas no seu harem.
+
+📟 **Output Temático:** A caixa de texto de cópia ($mm) agora muda de cor de acordo com o tema selecionado (ex: verde neon no Hacker ou ciano fosco na Miku).
+
+
+**Melhorias e Ajustes:**
+
+
+🩵 **Miku v3 Update:** A paleta da Miku foi totalmente refeita com tons de ciano fosco e cinza-azulado profundo, removendo o excesso de brilho para um visual mais elegante.
+
+⚙️ **Performance 2.0:** O botão de Performance foi movido para a sidebar e o código foi otimizado para lidar com harems gigantes sem travamentos.
+
+👤 **Assinatura Tuxn88:** O primeiro botão de tema agora leva o nome do criador e os créditos "by tuxn88" foram integrados de forma mais limpa ao design.
+
+
+(ver. 2.1)
+🛠️ **Mudae Tier Maker - by Tuxn88**
+https://tuxn88.github.io/Mudae-Tier-Maker---by-Tuxn88/
+
+
+=======================================================================
+
+
 🛠️ **[Mudae Tier Maker - by Tuxn88](https://tuxn88.github.io/Mudae-Tier-Maker---by-Tuxn88/)**
 Patch de Atualização (ver. 1.6)
 
@@ -33,3 +75,5 @@ Patch de Atualização (ver. 1.6)
 (ver. 1.6)
 🛠️ **Mudae Tier Maker - by Tuxn88**
 https://tuxn88.github.io/Mudae-Tier-Maker---by-Tuxn88/
+
+=======================================================================

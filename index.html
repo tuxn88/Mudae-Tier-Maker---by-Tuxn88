@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -9,85 +9,72 @@
     <style>
         :root { 
             --bg: #0d0d0d; --panel: #161616; --text: #f0f0f0; 
-            --accent: #2ecc71; /* Cor de destaque (ex: texto do hacker) */
+            --accent: #2ecc71; --btn-bg: #333; --btn-text: #fff;
+            --bg-img: none; --bg-dim: 0;
             --pastel-blue: #74b9ff; --pastel-purple: #a29bfe; 
-            --pastel-green: #55efc4; --pastel-orange: #fab1a0; 
-            --pastel-red: #ff7675; --pastel-pink: #fd79a8;
-            --bg-img: none;
+            --pastel-green: #55efc4; --pastel-pink: #fd79a8;
         }
         body { 
             font-family: 'Segoe UI', Tahoma, sans-serif; 
             background-color: var(--bg); 
-            background-image: var(--bg-img);
+            background-image: linear-gradient(rgba(0,0,0, var(--bg-dim)), rgba(0,0,0, var(--bg-dim))), var(--bg-img);
             background-size: cover;
             background-attachment: fixed;
             background-position: center;
             color: var(--text); 
-            padding: 15px; 
-            margin: 0; 
+            padding: 15px; margin: 0; 
             transition: background 0.3s, color 0.3s;
         }
 
-        /* --- SIDEBAR --- */
+        /* --- SIDEBAR & OVERLAY --- */
+        #overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); display: none; z-index: 998;
+        }
         #sidebar {
-            position: fixed;
-            left: -280px;
-            top: 0;
-            width: 260px;
-            height: 100%;
-            background: var(--panel);
-            box-shadow: 5px 0 15px rgba(0,0,0,0.5);
-            transition: 0.3s;
-            z-index: 999;
-            padding: 20px;
-            border-right: 1px solid rgba(255,255,255,0.1);
-            overflow-y: auto;
-            box-sizing: border-box;
+            position: fixed; left: -300px; top: 0; width: 280px; height: 100%;
+            background: var(--panel); box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+            transition: 0.3s; z-index: 999; padding: 20px;
+            border-right: 1px solid rgba(255,255,255,0.1); overflow-y: auto; box-sizing: border-box;
         }
         #sidebar.open { left: 0; }
         .sidebar-toggle {
-            position: fixed;
-            left: 15px;
-            bottom: 15px;
-            width: 40px;
-            height: 40px;
-            background: var(--pastel-purple);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 1000;
-            font-size: 20px;
+            position: fixed; left: 15px; top: 15px; width: 45px; height: 45px;
+            background: var(--panel); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 900; font-size: 24px; color: var(--text);
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-        .sidebar-header { font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid #444; padding-bottom: 5px; font-size: 14px; }
         
-        .menu { background: var(--panel); padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-header { font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
         
-        /* Input e Output agora seguem o tema */
+        /* MENU PRINCIPAL */
+        .menu { background: var(--panel); padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); margin-top: 50px; }
+        
         textarea, #output { 
-            width: 100%; 
-            background: rgba(0,0,0,0.2); 
-            color: var(--text); 
-            border: 1px solid rgba(255,255,255,0.1); 
-            border-radius: 6px; 
-            padding: 12px; 
-            box-sizing: border-box; 
+            width: 100%; background: rgba(0,0,0,0.2); color: var(--text); 
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 12px; box-sizing: border-box; 
         }
         textarea { height: 60px; margin: 10px 0; resize: none; }
         #output { 
-            min-height: 20px; 
-            word-break: break-all; 
-            font-family: monospace; 
-            font-size: 11px; 
-            color: var(--accent); /* Segue a cor de destaque do tema */
-            border: 1px solid var(--accent);
-            opacity: 0.9;
+            min-height: 20px; word-break: break-all; font-family: monospace; font-size: 11px; 
+            color: var(--accent); border: 1px solid var(--accent); opacity: 0.9; 
         }
         
+        /* BOTÕES */
+        .btns-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+        button { 
+            border: none; padding: 10px 14px; border-radius: 6px; cursor: pointer; 
+            font-weight: bold; transition: 0.2s; font-size: 10px; display: flex; 
+            align-items: center; gap: 4px; background: var(--btn-bg); color: var(--btn-text);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        button:hover { filter: brightness(1.2); transform: translateY(-1px); }
+        .btn-reset { margin-left: auto; background: #c0392b !important; color: white !important; }
+        
+        /* TIERS */
         #lista-tiers { display: flex; flex-direction: column; gap: 8px; }
-        .tier-row { display: flex; min-height: 110px; background: rgba(0,0,0,0.4); border-radius: 8px; overflow: hidden; border: 1px solid transparent; backdrop-filter: blur(2px); }
+        .tier-row { display: flex; min-height: 110px; background: rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden; border: 1px solid transparent; backdrop-filter: blur(4px); }
         .tier-sidebar { display: flex; align-items: stretch; background: rgba(0,0,0,0.2); border-right: 1px solid rgba(255,255,255,0.05); }
         .tier-handle { cursor: grab; width: 30px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #666; }
         .color-strip { width: 8px; cursor: pointer; border: none; padding: 0; background: none; }
@@ -96,121 +83,108 @@
         
         .tier-content { flex-grow: 1; display: flex; flex-wrap: wrap; gap: 5px; padding: 10px; min-height: 100px; }
         
+        /* CARDS */
         .card { width: 85px; background: #1f1f1f; border-radius: 4px; text-align: center; cursor: grab; border: 1px solid #333; position: relative; transition: transform 0.1s; }
         .card img { width: 100%; height: 115px; object-fit: cover; border-radius: 3px 3px 0 0; display: block; pointer-events: none; }
         .card p { font-size: 8px; padding: 4px 2px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #ccc; }
         .card.selected { border: 2px solid var(--pastel-blue); z-index: 10; box-shadow: 0 0 10px rgba(116, 185, 255, 0.5); }
         .card.missing::after { content: "❌"; position: absolute; top: 2px; right: 2px; font-size: 14px; text-shadow: 0 0 3px black; z-index: 5; }
 
+        /* SIDEBAR INTERNALS */
+        .custom-group { margin-bottom: 15px; display: flex; flex-direction: column; gap: 8px; }
+        .custom-group label { font-size: 10px; opacity: 0.7; text-transform: uppercase; font-weight: bold; }
+        .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+        .theme-btn { background: rgba(255,255,255,0.05); color: var(--text); border: 1px solid rgba(255,255,255,0.1); width: 100%; text-align: center; }
+        
+        /* UTILITARIOS */
         .ghost { opacity: 0.1; }
         body.freeze-mode img { image-rendering: -webkit-optimize-contrast; filter: saturate(0.8); }
-        
-        .btns-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
-        button { border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; font-size: 10px; display: flex; align-items: center; gap: 4px; color: #2d3436; }
-        .btn-add { background: var(--pastel-blue); }
-        .btn-tier { background: var(--pastel-purple); }
-        .btn-colors { background: var(--pastel-pink); }
-        .btn-freeze { background: #dfe6e9; width: 100%; margin-top: 10px; }
-        .btn-save { background: #d35400; color: white; }
-        .btn-img { background: var(--pastel-green); }
-        .btn-reset { background: var(--pastel-red); margin-left: auto; }
-        
-        /* Itens dentro da Sidebar */
-        .custom-group { margin-bottom: 15px; display: flex; flex-direction: column; gap: 8px; }
-        .custom-group label { font-size: 11px; opacity: 0.8; text-transform: uppercase; }
-        .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
-        .theme-btn { padding: 6px; font-size: 10px; background: rgba(255,255,255,0.1); color: var(--text); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; cursor: pointer; }
-        .theme-btn:hover { background: rgba(255,255,255,0.2); }
-
-        .export-section { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
-        .export-btns { display: flex; gap: 8px; }
-        .btn-export { background: #2ecc71; color: white; flex: 3; justify-content: center; font-size: 11px; }
-        .btn-refresh { background: #3498db; color: white; flex: 1; justify-content: center; font-size: 11px; }
-        
         .footer-area { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding: 10px; }
-        .action-zone { display: flex; gap: 10px; }
         #trash-zone { width: 130px; height: 50px; border: 2px dashed #ff7675; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #ff7675; font-weight: bold; font-size: 11px; }
-        .btn-clear-x { background: #ff7675; color: white; padding: 0 15px; border-radius: 8px; cursor: pointer; border: none; font-weight: bold; font-size: 10px; }
-        .credits { opacity: 0.1; font-size: 10px; color: var(--text); }
+        .credits { opacity: 0.2; font-size: 10px; color: var(--text); }
         .no-export { display: none !important; }
+        .hidden-storage { display: none !important; }
     </style>
 </head>
 <body>
 
-<div class="sidebar-toggle" onclick="toggleSidebar()">⚙️</div>
+<div id="overlay" onclick="toggleSidebar()"></div>
+
+<div class="sidebar-toggle" onclick="toggleSidebar()">&#9776;</div>
 
 <div id="sidebar">
-    <div class="sidebar-header">🎨 THEMES & CUSTOM</div>
-    
+    <div class="sidebar-header">🎨 Temas Prontos</div>
     <div class="custom-group">
-        <label>Presets</label>
         <div class="theme-grid">
-            <button class="theme-btn" onclick="applyTheme('dark')">Default</button>
-            <button class="theme-btn" onclick="applyTheme('light')">Light</button>
-            <button class="theme-btn" onclick="applyTheme('hacker')">Hacker</button>
-            <button class="theme-btn" onclick="applyTheme('basalt')">Basalt</button>
-            <button class="theme-btn" onclick="applyTheme('miku')">Miku</button>
+            <button class="theme-btn" onclick="applyTheme('dark')">Dark Default</button>
+            <button class="theme-btn" onclick="applyTheme('light')">Modo Claro</button>
+            <button class="theme-btn" onclick="applyTheme('hacker')">Hacker 01</button>
+            <button class="theme-btn" onclick="applyTheme('basalt')">Basalto</button>
+            <button class="theme-btn" onclick="applyTheme('miku')">Miku Fosco</button>
+            <button class="theme-btn" onclick="applyTheme('cyber')">Cyberpunk</button>
+            <button class="theme-btn" onclick="applyTheme('coffee')">Coffee Time</button>
+            <button class="theme-btn" onclick="applyTheme('lavender')">Lavender</button>
+        </div>
+        <button class="theme-btn" style="background: var(--pastel-green); color: #000; margin-top:5px;" onclick="randomHarmoniousTheme()">🔀 Aleatório Harmônico</button>
+    </div>
+
+    <div class="sidebar-header">🛠️ Customização Total</div>
+    <div class="custom-group">
+        <label>Cores Base</label>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <div style="display:flex; flex-direction:column;"><input type="color" id="cfg-bg" oninput="updateUI()"><span style="font-size:9px">Fundo</span></div>
+            <div style="display:flex; flex-direction:column;"><input type="color" id="cfg-panel" oninput="updateUI()"><span style="font-size:9px">Menus</span></div>
+            <div style="display:flex; flex-direction:column;"><input type="color" id="cfg-text" oninput="updateUI()"><span style="font-size:9px">Texto</span></div>
+            <div style="display:flex; flex-direction:column;"><input type="color" id="cfg-btn" oninput="updateUI()"><span style="font-size:9px">Botões</span></div>
         </div>
     </div>
 
     <div class="custom-group">
-        <label>Colors</label>
-        <div style="display:flex; gap:10px; align-items:center;">
-            <input type="color" id="cfg-bg" oninput="updateUI()"> <span>Background</span>
-        </div>
-        <div style="display:flex; gap:10px; align-items:center;">
-            <input type="color" id="cfg-panel" oninput="updateUI()"> <span>Menus</span>
-        </div>
-        <div style="display:flex; gap:10px; align-items:center;">
-            <input type="color" id="cfg-text" oninput="updateUI()"> <span>Text</span>
-        </div>
+        <label>Imagem de Fundo (URL)</label>
+        <input type="text" id="cfg-bg-img" placeholder="https://..." style="font-size: 11px; padding: 8px; background: rgba(0,0,0,0.3); border: 1px solid #444; color: #fff;" oninput="updateUI()">
+        <label>Brilho do Fundo</label>
+        <input type="range" id="cfg-bg-dim" min="0" max="0.9" step="0.1" value="0" oninput="updateUI()">
     </div>
 
-    <div class="custom-group">
-        <label>Background Image</label>
-        <input type="text" id="cfg-bg-img" placeholder="URL da Imagem" style="font-size: 10px; padding: 5px;" oninput="updateUI()">
-    </div>
-
-    <div class="sidebar-header" style="margin-top:20px;">⚡ SYSTEM</div>
-    <button class="btn-freeze" id="freezeBtn" onclick="toggleFreeze()">❄️ PERFORMANCE</button>
-    
-    <p style="font-size: 9px; opacity: 0.5; margin-top: 30px;">Ajuste o visual e feche o menu na engrenagem.</p>
+    <div class="sidebar-header">⚡ Sistema</div>
+    <button class="theme-btn" id="freezeBtn" onclick="toggleFreeze()">❄️ PERFORMANCE: OFF</button>
 </div>
 
 <div class="menu">
-    <textarea id="inputLista" placeholder="Name - Image URL"></textarea>
+    <textarea id="inputLista" placeholder="Nome Personagem - URL Imagem (Um por linha)"></textarea>
     <div class="btns-row">
-        <button class="btn-add" onclick="gerarCards()">📥 LOAD</button>
-        <button class="btn-tier" onclick="adicionarTier()">➕ TIER</button>
-        <button class="btn-colors" onclick="randomPastelPalette()">🎨 COLORS</button>
-        <button class="btn-save" onclick="salvarLocal()">💾 SAVE</button>
-        <button class="btn-img" onclick="baixarImagem()">🖼️ PNG</button>
+        <button onclick="gerarCards()">📥 LOAD</button>
+        <button onclick="adicionarTier()">➕ TIER</button>
+        <button onclick="randomPastelPalette()">🎨 CORES TIER</button>
+        <button onclick="salvarLocal()">💾 SAVE</button>
+        <button onclick="baixarImagem()">🖼️ EXPORT PNG</button>
         <button class="btn-reset" onclick="resetarTudo()">🔄 RESET</button>
     </div>
 </div>
 
 <div id="capture-area" style="padding: 10px;">
     <div id="lista-tiers"></div>
+    
     <div id="reserva-container">
-        <h4>Storage</h4>
-        <div id="reserva" class="tier-content"></div>
+        <h4 style="margin-bottom: 5px; opacity: 0.6;">Storage</h4>
+        <div id="reserva" class="tier-content" style="background: rgba(0,0,0,0.1); border-radius: 8px; border: 1px dashed rgba(255,255,255,0.05);"></div>
     </div>
 
     <div class="footer-area">
         <div class="action-zone" id="ui-actions">
-            <div id="trash-zone">🗑️ DROP TO DELETE</div>
-            <button class="btn-clear-x" onclick="removeMarked()">❌ CLEAR ALL 'X'</button>
+            <div id="trash-zone">DROP TO DELETE</div>
+            <button style="background: #ff7675; color: white;" onclick="removeMarked()">❌ CLEAR ALL 'X'</button>
         </div>
         <div class="credits">@tuxn88</div>
     </div>
 </div>
 
-<div class="menu export-section">
-    <div class="export-btns">
-        <button class="btn-refresh" onclick="gerarTextoMM()">🔄 ATUALIZAR</button>
-        <button class="btn-export" onclick="copiarNomes()">📋 COPIAR NOMES</button>
+<div class="menu">
+    <div style="display:flex; gap: 8px; margin-bottom: 10px;">
+        <button style="background: #3498db; color: white; flex: 1;" onclick="gerarTextoMM()">🔄 ATUALIZAR LISTA</button>
+        <button style="background: #2ecc71; color: white; flex: 2;" onclick="copiarNomes()">📋 COPIAR PARA $MM</button>
     </div>
-    <div id="output">...</div>
+    <div id="output">O código para o bot aparecerá aqui...</div>
 </div>
 
 <script>
@@ -218,80 +192,123 @@
     const reserva = document.getElementById('reserva');
     const trashZone = document.getElementById('trash-zone');
 
-    // Toggle Sidebar
     function toggleSidebar() {
-        document.getElementById('sidebar').classList.toggle('open');
+        const sb = document.getElementById('sidebar');
+        const ov = document.getElementById('overlay');
+        sb.classList.toggle('open');
+        ov.style.display = sb.classList.contains('open') ? 'block' : 'none';
     }
 
-    // Funções de Estilo e Temas
     function updateUI() {
         const root = document.documentElement;
-        root.style.setProperty('--bg', document.getElementById('cfg-bg').value);
-        root.style.setProperty('--panel', document.getElementById('cfg-panel').value);
-        root.style.setProperty('--text', document.getElementById('cfg-text').value);
-        
+        const bg = document.getElementById('cfg-bg').value;
+        const panel = document.getElementById('cfg-panel').value;
+        const text = document.getElementById('cfg-text').value;
+        const btn = document.getElementById('cfg-btn').value;
+        const dim = document.getElementById('cfg-bg-dim').value;
         const imgUrl = document.getElementById('cfg-bg-img').value;
+
+        root.style.setProperty('--bg', bg);
+        root.style.setProperty('--panel', panel);
+        root.style.setProperty('--text', text);
+        root.style.setProperty('--btn-bg', btn);
+        root.style.setProperty('--btn-text', isDark(btn) ? '#fff' : '#000');
+        root.style.setProperty('--bg-dim', dim);
         root.style.setProperty('--bg-img', imgUrl ? `url('${imgUrl}')` : 'none');
     }
 
+    function isDark(color) {
+        const hex = color.replace('#', '');
+        const r = parseInt(hex.substr(0,2), 16);
+        const g = parseInt(hex.substr(2,2), 16);
+        const b = parseInt(hex.substr(4,2), 16);
+        return ((r*0.299) + (g*0.587) + (b*0.114)) < 128;
+    }
+
     function applyTheme(mode) {
-        const cfg = {
-            dark:    { bg: '#0d0d0d', panel: '#161616', text: '#f0f0f0', accent: '#2ecc71', img: '' },
-            light:   { bg: '#f0f0f0', panel: '#ffffff', text: '#2d3436', accent: '#3498db', img: '' },
-            hacker:  { bg: '#000000', panel: '#050505', text: '#00ff41', accent: '#00ff41', img: '' },
-            basalt:  { bg: '#2c3e50', panel: '#34495e', text: '#ecf0f1', accent: '#e67e22', img: '' },
-            miku:    { bg: '#39c5bb', panel: '#ffffff', text: '#000000', accent: '#39c5bb', img: '' }
+        const themes = {
+            dark:     { bg: '#0d0d0d', panel: '#161616', text: '#f0f0f0', btn: '#333333', accent: '#2ecc71' },
+            light:    { bg: '#f5f5f5', panel: '#ffffff', text: '#2d3436', btn: '#dfe6e9', accent: '#3498db' },
+            hacker:   { bg: '#000000', panel: '#0a0a0a', text: '#00ff41', btn: '#003300', accent: '#00ff41' },
+            basalt:   { bg: '#2c3e50', panel: '#34495e', text: '#ecf0f1', btn: '#1a252f', accent: '#e67e22' },
+            miku:     { bg: '#2c3e2e', panel: '#ffffff', text: '#39c5bb', btn: '#39c5bb', accent: '#39c5bb' },
+            cyber:    { bg: '#0b0014', panel: '#1a002e', text: '#00f2ff', btn: '#ff0055', accent: '#ff0055' },
+            coffee:   { bg: '#2b2118', panel: '#3e3024', text: '#d7ccc8', btn: '#5d4037', accent: '#8d6e63' },
+            lavender: { bg: '#2d2438', panel: '#3d3051', text: '#e0d1f7', btn: '#9b59b6', accent: '#d1b3ff' }
         };
-        const theme = cfg[mode];
-        document.getElementById('cfg-bg').value = theme.bg;
-        document.getElementById('cfg-panel').value = theme.panel;
-        document.getElementById('cfg-text').value = theme.text;
-        document.getElementById('cfg-bg-img').value = theme.img;
-        document.documentElement.style.setProperty('--accent', theme.accent);
+        const t = themes[mode];
+        document.getElementById('cfg-bg').value = t.bg;
+        document.getElementById('cfg-panel').value = t.panel;
+        document.getElementById('cfg-text').value = t.text;
+        document.getElementById('cfg-btn').value = t.btn;
+        document.documentElement.style.setProperty('--accent', t.accent);
         updateUI();
     }
 
-    // --- CÓDIGO ORIGINAL MANTIDO ABAIXO ---
+    function randomHarmoniousTheme() {
+        const hue = Math.floor(Math.random() * 360);
+        document.getElementById('cfg-bg').value = hslToHex(hue, 30, 10);
+        document.getElementById('cfg-panel').value = hslToHex(hue, 25, 15);
+        document.getElementById('cfg-text').value = hslToHex(hue, 10, 90);
+        document.getElementById('cfg-btn').value = hslToHex(hue, 40, 30);
+        document.documentElement.style.setProperty('--accent', hslToHex(hue, 60, 50));
+        updateUI();
+    }
 
+    function hslToHex(h, s, l) {
+        l /= 100; const a = s * Math.min(l, 1 - l) / 100;
+        const f = n => {
+            const k = (n + h / 30) % 12;
+            const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+            return Math.round(255 * color).toString(16).padStart(2, '0');
+        };
+        return `#${f(0)}${f(8)}${f(4)}`;
+    }
+
+    // --- LOGICA DE EXPORTAÇÃO ---
+    async function baixarImagem() {
+        const ui = document.getElementById('ui-actions');
+        const storage = document.getElementById('reserva-container');
+        const isEmpty = reserva.children.length === 0;
+
+        ui.classList.add('no-export');
+        if(isEmpty) storage.classList.add('hidden-storage');
+
+        const area = document.getElementById('capture-area');
+        const canvas = await html2canvas(area, { backgroundColor: null, useCORS: true, scale: 2 });
+        
+        const link = document.createElement('a');
+        link.download = 'mudae-tier-tuxn88.png';
+        link.href = canvas.toDataURL();
+        link.click();
+
+        ui.classList.remove('no-export');
+        storage.classList.remove('hidden-storage');
+    }
+
+    // --- LOGICA ORIGINAL MANTIDA ---
     function fixUrl(url) {
-        if (url && url.includes('mudae.net')) {
-            return 'https://images.weserv.nl/?url=' + encodeURIComponent(url.replace('https://', '')) + '&n=-1';
-        }
+        if (url && url.includes('mudae.net')) return 'https://images.weserv.nl/?url=' + encodeURIComponent(url.replace('https://', '')) + '&n=-1';
         return url;
     }
 
     new Sortable(listaTiers, { handle: '.tier-handle', animation: 150, ghostClass: 'ghost' });
-
     function configurarDrag(el) {
-        new Sortable(el, { 
-            group: 'chars', 
-            animation: 150, 
-            multiDrag: true, 
-            selectedClass: 'selected',
-            ghostClass: 'ghost',
-            onStart: function() {
-                this.options.animation = document.body.classList.contains('freeze-mode') ? 0 : 150;
-            }
+        new Sortable(el, { group: 'chars', animation: 150, multiDrag: true, selectedClass: 'selected', ghostClass: 'ghost',
+            onStart: function() { this.options.animation = document.body.classList.contains('freeze-mode') ? 0 : 150; }
         });
     }
-
-    new Sortable(trashZone, {
-        group: 'chars',
-        onAdd: function (evt) {
-            const items = evt.items.length > 0 ? evt.items : [evt.item];
-            items.forEach(el => el.remove());
-        }
-    });
-
+    new Sortable(trashZone, { group: 'chars', onAdd: (evt) => { (evt.items.length > 0 ? evt.items : [evt.item]).forEach(el => el.remove()); } });
     configurarDrag(reserva);
 
     function toggleFreeze() {
         document.body.classList.toggle('freeze-mode');
         const btn = document.getElementById('freezeBtn');
-        btn.textContent = document.body.classList.contains('freeze-mode') ? '🔥 NORMAL MODE' : '❄️ PERFORMANCE';
+        const isOff = document.body.classList.contains('freeze-mode');
+        btn.textContent = isOff ? '🔥 PERFORMANCE: ON' : '❄️ PERFORMANCE: OFF';
     }
 
-    function adicionarTier(nome = "NEW TIER", cor = "#ff7f7f") {
+    function adicionarTier(nome = "NOVA TIER", cor = "#74b9ff") {
         const row = document.createElement('div');
         row.className = 'tier-row';
         row.style.borderColor = cor;
@@ -314,22 +331,11 @@
         const rows = document.querySelectorAll('.tier-row');
         const baseHue = Math.floor(Math.random() * 360);
         rows.forEach((row, index) => {
-            const hexColor = hslToHex((baseHue + (index * 20)) % 360, 70, 75);
+            const hexColor = hslToHex((baseHue + (index * 30)) % 360, 70, 75);
             const input = row.querySelector('.color-strip');
             input.value = hexColor;
             updateTierColor(input);
         });
-    }
-
-    function hslToHex(h, s, l) {
-        l /= 100;
-        const a = s * Math.min(l, 1 - l) / 100;
-        const f = n => {
-            const k = (n + h / 30) % 12;
-            const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-            return Math.round(255 * color).toString(16).padStart(2, '0');
-        };
-        return `#${f(0)}${f(8)}${f(4)}`;
     }
 
     function gerarCards() {
@@ -364,54 +370,28 @@
         const rows = document.querySelectorAll('.tier-row');
         let nomesMM = [];
         rows.forEach(row => {
-            const cards = row.querySelectorAll('.card');
-            cards.forEach(c => {
-                let nomeBruto = c.getAttribute('data-nome');
-                nomesMM.push(nomeBruto.split('|')[0].trim());
+            row.querySelectorAll('.card').forEach(c => {
+                nomesMM.push(c.getAttribute('data-nome').split('|')[0].trim());
             });
         });
-        
-        if (nomesMM.length === 0) {
-            document.getElementById('output').innerText = "Tiers vazios!";
-            return "";
-        }
-        const result = nomesMM.join(' $ ');
+        const result = nomesMM.length === 0 ? "Tiers vazios!" : nomesMM.join(' $ ');
         document.getElementById('output').innerText = result;
         return result;
     }
 
     function copiarNomes() {
         const texto = gerarTextoMM();
-        if (texto) {
-            navigator.clipboard.writeText(texto).then(() => {
-                alert("Copiado com sucesso!");
-            });
+        if (texto && texto !== "Tiers vazios!") {
+            navigator.clipboard.writeText(texto).then(() => alert("Copiado!"));
         }
     }
 
     function removeMarked() {
-        if(confirm("Remover personagens marcadas com ❌?")) {
-            document.querySelectorAll('.card.missing').forEach(c => c.remove());
-        }
+        if(confirm("Remover ❌?")) document.querySelectorAll('.card.missing').forEach(c => c.remove());
     }
 
     function resetarTudo() {
-        if(confirm("Resetar tudo?")) {
-            localStorage.removeItem('mudaeFinal_v5');
-            location.reload();
-        }
-    }
-
-    async function baixarImagem() {
-        const ui = document.getElementById('ui-actions');
-        ui.classList.add('no-export');
-        const area = document.getElementById('capture-area');
-        const canvas = await html2canvas(area, { backgroundColor: null, useCORS: true, scale: 2 });
-        const link = document.createElement('a');
-        link.download = 'mudae-tier.png';
-        link.href = canvas.toDataURL();
-        link.click();
-        ui.classList.remove('no-export');
+        if(confirm("Resetar TUDO?")) { localStorage.removeItem('mudaeFinal_v6'); location.reload(); }
     }
 
     function salvarLocal() {
@@ -420,7 +400,9 @@
                 bg: document.getElementById('cfg-bg').value,
                 panel: document.getElementById('cfg-panel').value,
                 text: document.getElementById('cfg-text').value,
+                btn: document.getElementById('cfg-btn').value,
                 bgImg: document.getElementById('cfg-bg-img').value,
+                bgDim: document.getElementById('cfg-bg-dim').value,
                 accent: document.documentElement.style.getPropertyValue('--accent')
             },
             tiers: Array.from(document.querySelectorAll('.tier-row')).map(row => ({
@@ -438,35 +420,32 @@
                 missing: c.classList.contains('missing')
             }))
         };
-        localStorage.setItem('mudaeFinal_v5', JSON.stringify(dados));
-        alert("Saved!");
+        localStorage.setItem('mudaeFinal_v6', JSON.stringify(dados));
+        alert("Salvo!");
     }
 
     function carregarLocal() {
-        const salvo = localStorage.getItem('mudaeFinal_v5');
-        if (!salvo) { 
-            adicionarTier("tuxn88", "#2dc7b2"); 
-            applyTheme('dark');
-            return; 
-        }
-        const dados = JSON.parse(salvo);
+        const salvo = localStorage.getItem('mudaeFinal_v6');
+        if (!salvo) { adicionarTier("FAVORITOS", "#39c5bb"); applyTheme('dark'); return; }
+        const d = JSON.parse(salvo);
         
-        // Carregar Cores/Tema
-        if(dados.config) {
-            document.getElementById('cfg-bg').value = dados.config.bg;
-            document.getElementById('cfg-panel').value = dados.config.panel;
-            document.getElementById('cfg-text').value = dados.config.text;
-            document.getElementById('cfg-bg-img').value = dados.config.bgImg || "";
-            document.documentElement.style.setProperty('--accent', dados.config.accent || '#2ecc71');
+        if(d.config) {
+            document.getElementById('cfg-bg').value = d.config.bg;
+            document.getElementById('cfg-panel').value = d.config.panel;
+            document.getElementById('cfg-text').value = d.config.text;
+            document.getElementById('cfg-btn').value = d.config.btn || '#333';
+            document.getElementById('cfg-bg-img').value = d.config.bgImg || "";
+            document.getElementById('cfg-bg-dim').value = d.config.bgDim || 0;
+            document.documentElement.style.setProperty('--accent', d.config.accent || '#2ecc71');
             updateUI();
         }
 
-        dados.tiers.forEach(t => {
+        d.tiers.forEach(t => {
             adicionarTier(t.nome, t.cor);
             const container = listaTiers.lastElementChild.querySelector('.tier-content');
             t.personagens.forEach(p => renderCard(p, container));
         });
-        dados.reserva.forEach(p => renderCard(p, reserva));
+        d.reserva.forEach(p => renderCard(p, reserva));
     }
 
     function renderCard(p, container) {

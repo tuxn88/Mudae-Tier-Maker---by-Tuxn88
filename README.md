@@ -21,6 +21,8 @@ Patch de Atualização (ver. 2.1)
 
 📟 **Output Temático:** A caixa de texto de cópia ($mm) agora muda de cor de acordo com o tema selecionado (ex: verde neon no Hacker ou ciano fosco na Miku).
 
+☢️ **Potato Mode (UltraLow):** Pensado para os celulares mais humildes! Esse modo desativa todas as transições, congela GIFs, reduz a qualidade das imagens e trava a performance no máximo para eliminar o lag de vez.
+
 
 **Melhorias e Ajustes:**
 

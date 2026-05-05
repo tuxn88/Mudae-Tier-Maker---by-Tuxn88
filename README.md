@@ -1,4 +1,4 @@
-🛠️ **Mudae Tier Maker - by Tuxn88**
+🛠️ **[Mudae Tier Maker - by Tuxn88](https://tuxn88.github.io/Mudae-Tier-Maker---by-Tuxn88/)**
 Patch de Atualização (ver. 1.6)
 
 
@@ -32,3 +32,4 @@ Patch de Atualização (ver. 1.6)
 
 (ver. 1.6)
 🛠️ **Mudae Tier Maker - by Tuxn88**
+https://tuxn88.github.io/Mudae-Tier-Maker---by-Tuxn88/

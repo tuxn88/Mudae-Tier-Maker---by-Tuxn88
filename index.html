@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Mudae Tier Maker - by Tuxn88</title>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root { 
+            --bg: #0d0d0d; --panel: #161616; --text: #f0f0f0; 
+            --pastel-blue: #74b9ff; --pastel-purple: #a29bfe; 
+            --pastel-green: #55efc4; --pastel-orange: #fab1a0; 
+            --pastel-red: #ff7675; --pastel-pink: #fd79a8;
+        }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); color: var(--text); padding: 15px; margin: 0; }
+        .menu { background: var(--panel); padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #222; }
+        textarea { width: 100%; height: 60px; background: #1f1f1f; color: #fff; border: 1px solid #333; border-radius: 6px; padding: 12px; margin: 10px 0; box-sizing: border-box; resize: none; }
+        
+        #lista-tiers { display: flex; flex-direction: column; gap: 8px; }
+        .tier-row { display: flex; min-height: 110px; background: #111; border-radius: 8px; overflow: hidden; border: 1px solid transparent; }
+        .tier-sidebar { display: flex; align-items: stretch; background: #1a1a1a; border-right: 1px solid #222; }
+        .tier-handle { cursor: grab; width: 30px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #444; }
+        .color-strip { width: 8px; cursor: pointer; border: none; padding: 0; background: none; }
+        .tier-label { width: 110px; display: flex; align-items: center; justify-content: center; padding: 10px; position: relative; color: #000; font-weight: 900; text-transform: uppercase; text-align: center; font-size: 12px; }
+        .btn-del { position: absolute; top: 4px; right: 4px; cursor: pointer; font-size: 9px; background: rgba(0,0,0,0.2); border-radius: 3px; padding: 2px 4px; border: none; color: white; }
+        
+        .tier-content { flex-grow: 1; display: flex; flex-wrap: wrap; gap: 5px; padding: 10px; min-height: 100px; background: #0a0a0a; }
+        
+        .card { width: 85px; background: #1f1f1f; border-radius: 4px; text-align: center; cursor: grab; border: 1px solid #333; position: relative; transition: transform 0.1s; }
+        .card img { width: 100%; height: 115px; object-fit: cover; border-radius: 3px 3px 0 0; display: block; pointer-events: none; }
+        .card p { font-size: 8px; padding: 4px 2px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #ccc; }
+        .card.selected { border: 2px solid var(--pastel-blue); z-index: 10; }
+        .card.missing::after { content: "❌"; position: absolute; top: 2px; right: 2px; font-size: 14px; text-shadow: 0 0 3px black; z-index: 5; }
+
+        /* Estilo Otimizado (Freeze) */
+        body.freeze-mode img { image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; filter: saturate(0.8); }
+        
+        .btns-row { display: flex; gap: 6px; flex-wrap: wrap; }
+        button { border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; font-size: 10px; display: flex; align-items: center; gap: 4px; color: #2d3436; }
+        .btn-add { background: var(--pastel-blue); }
+        .btn-tier { background: var(--pastel-purple); }
+        .btn-colors { background: var(--pastel-pink); }
+        .btn-freeze { background: #dfe6e9; }
+        .btn-save { background: var(--pastel-orange); }
+        .btn-img { background: var(--pastel-green); }
+        .btn-reset { background: var(--pastel-red); margin-left: auto; }
+        
+        .footer-area { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding: 10px; }
+        .action-zone { display: flex; gap: 10px; }
+        #trash-zone { width: 130px; height: 50px; border: 2px dashed #ff7675; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #ff7675; font-weight: bold; font-size: 11px; }
+        .btn-clear-x { background: #ff7675; color: white; padding: 0 15px; border-radius: 8px; cursor: pointer; border: none; font-weight: bold; font-size: 10px; }
+        .credits { opacity: 0.1; font-size: 10px; color: var(--text); }
+        .no-export { display: none !important; }
+
+        @media (max-width: 600px) {
+            .card { width: 70px; }
+            .card img { height: 95px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="menu">
+    <textarea id="inputLista" placeholder="Name - Image URL"></textarea>
+    <div class="btns-row">
+        <button class="btn-add" onclick="gerarCards()"><span>📥</span> LOAD</button>
+        <button class="btn-tier" onclick="adicionarTier()"><span>➕</span> TIER</button>
+        <button class="btn-colors" onclick="randomPastelPalette()"><span>🎨</span> COLORS</button>
+        <button class="btn-freeze" id="freezeBtn" onclick="toggleFreeze()"><span>❄️</span> PERFORMANCE</button>
+        <button class="btn-save" onclick="salvarLocal()"><span>💾</span> SAVE</button>
+        <button class="btn-img" onclick="baixarImagem()"><span>🖼️</span> PNG</button>
+        <button class="btn-reset" onclick="resetarTudo()"><span>🔄</span> RESET</button>
+    </div>
+</div>
+
+<div id="capture-area" style="padding: 10px; background: #0d0d0d;">
+    <div id="lista-tiers"></div>
+    <div id="reserva-container">
+        <h4>Storage</h4>
+        <div id="reserva" class="tier-content"></div>
+    </div>
+
+    <div class="footer-area">
+        <div class="action-zone" id="ui-actions">
+            <div id="trash-zone">🗑️ DROP TO DELETE</div>
+            <button class="btn-clear-x" onclick="removeMarked()">❌ CLEAR ALL 'X'</button>
+        </div>
+        <div class="credits">@tuxn88</div>
+    </div>
+</div>
+
+<script>
+    const listaTiers = document.getElementById('lista-tiers');
+    const reserva = document.getElementById('reserva');
+    const trashZone = document.getElementById('trash-zone');
+
+    new Sortable(listaTiers, { handle: '.tier-handle', animation: 150 });
+
+    function configurarDrag(el) {
+        new Sortable(el, { 
+            group: 'chars', 
+            animation: 150, 
+            multiDrag: true, 
+            selectedClass: 'selected',
+            ghostClass: 'ghost'
+        });
+    }
+
+    new Sortable(trashZone, {
+        group: 'chars',
+        onAdd: function (evt) {
+            const items = evt.items.length > 0 ? evt.items : [evt.item];
+            items.forEach(el => el.remove());
+        }
+    });
+
+    configurarDrag(reserva);
+
+    function toggleFreeze() {
+        document.body.classList.toggle('freeze-mode');
+        const btn = document.getElementById('freezeBtn');
+        btn.textContent = document.body.classList.contains('freeze-mode') ? '🔥 NORMAL MODE' : '❄️ PERFORMANCE';
+    }
+
+    function adicionarTier(nome = "NEW TIER", cor = "#ff7f7f") {
+        const row = document.createElement('div');
+        row.className = 'tier-row';
+        row.style.borderColor = cor;
+        row.innerHTML = `
+            <div class="tier-sidebar"><div class="tier-handle">☰</div><input type="color" class="color-strip" value="${cor}" oninput="updateTierColor(this)"></div>
+            <div class="tier-label" style="background:${cor}"><button class="btn-del" onclick="this.closest('.tier-row').remove()">X</button><span contenteditable="true">${nome}</span></div>
+            <div class="tier-content"></div>
+        `;
+        listaTiers.appendChild(row);
+        configurarDrag(row.querySelector('.tier-content'));
+    }
+
+    function updateTierColor(input) {
+        const row = input.closest('.tier-row');
+        row.style.borderColor = input.value;
+        row.querySelector('.tier-label').style.background = input.value;
+    }
+
+    function randomPastelPalette() {
+        const rows = document.querySelectorAll('.tier-row');
+        const baseHue = Math.floor(Math.random() * 360);
+        rows.forEach((row, index) => {
+            const hexColor = hslToHex((baseHue + (index * 20)) % 360, 70, 75);
+            const input = row.querySelector('.color-strip');
+            input.value = hexColor;
+            updateTierColor(input);
+        });
+    }
+
+    function hslToHex(h, s, l) {
+        l /= 100;
+        const a = s * Math.min(l, 1 - l) / 100;
+        const f = n => {
+            const k = (n + h / 30) % 12;
+            const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+            return Math.round(255 * color).toString(16).padStart(2, '0');
+        };
+        return `#${f(0)}${f(8)}${f(4)}`;
+    }
+
+    function gerarCards() {
+        const linhas = document.getElementById('inputLista').value.split('\n');
+        const novosNomes = [];
+        linhas.forEach(linha => {
+            if (linha.includes(' - ')) {
+                const [nome, url] = linha.split(' - ').map(s => s.trim());
+                novosNomes.push(nome);
+                const existente = document.querySelector(`[data-nome="${nome}"]`);
+                if (existente) {
+                    existente.querySelector('img').src = url;
+                    existente.classList.remove('missing');
+                } else {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.setAttribute('data-nome', nome);
+                    card.innerHTML = `<img src="${url}" loading="lazy"><p>${nome}</p>`;
+                    reserva.appendChild(card);
+                }
+            }
+        });
+        if(novosNomes.length > 0) {
+            document.querySelectorAll('.card').forEach(card => {
+                if (!novosNomes.includes(card.getAttribute('data-nome'))) card.classList.add('missing');
+            });
+        }
+        document.getElementById('inputLista').value = "";
+    }
+
+    function removeMarked() {
+        if(confirm("Remover personagens marcadas com ❌?")) {
+            document.querySelectorAll('.card.missing').forEach(c => c.remove());
+        }
+    }
+
+    function resetarTudo() {
+        if(confirm("Resetar tudo?")) {
+            localStorage.removeItem('mudaeFinal_v5');
+            location.reload();
+        }
+    }
+
+    async function baixarImagem() {
+        const ui = document.getElementById('ui-actions');
+        ui.classList.add('no-export');
+        const area = document.getElementById('capture-area');
+        const canvas = await html2canvas(area, { backgroundColor: '#0d0d0d', useCORS: true, scale: 2 });
+        const link = document.createElement('a');
+        link.download = 'mudae-tier.png';
+        link.href = canvas.toDataURL();
+        link.click();
+        ui.classList.remove('no-export');
+    }
+
+    function salvarLocal() {
+        const dados = {
+            tiers: Array.from(document.querySelectorAll('.tier-row')).map(row => ({
+                nome: row.querySelector('.tier-label span').innerText,
+                cor: row.querySelector('.color-strip').value,
+                personagens: Array.from(row.querySelectorAll('.card')).map(c => ({
+                    nome: c.getAttribute('data-nome'),
+                    url: c.querySelector('img').src,
+                    missing: c.classList.contains('missing')
+                }))
+            })),
+            reserva: Array.from(reserva.querySelectorAll('.card')).map(c => ({
+                nome: c.getAttribute('data-nome'),
+                url: c.querySelector('img').src,
+                missing: c.classList.contains('missing')
+            }))
+        };
+        localStorage.setItem('mudaeFinal_v5', JSON.stringify(dados));
+        alert("Saved!");
+    }
+
+    function carregarLocal() {
+        const salvo = localStorage.getItem('mudaeFinal_v5');
+        if (!salvo) { adicionarTier("tuxn88", "#2dc7b2"); return; }
+        const dados = JSON.parse(salvo);
+        dados.tiers.forEach(t => {
+            adicionarTier(t.nome, t.cor);
+            const container = listaTiers.lastElementChild.querySelector('.tier-content');
+            t.personagens.forEach(p => renderCard(p, container));
+        });
+        dados.reserva.forEach(p => renderCard(p, reserva));
+    }
+
+    function renderCard(p, container) {
+        const card = document.createElement('div');
+        card.className = p.missing ? 'card missing' : 'card';
+        card.setAttribute('data-nome', p.nome);
+        card.innerHTML = `<img src="${p.url}" loading="lazy"><p>${p.nome}</p>`;
+        container.appendChild(card);
+    }
+    window.onload = carregarLocal;
+</script>
+</body>
+</html>

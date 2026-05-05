@@ -21,8 +21,10 @@ Patch de Atualização (ver. 2.1)
 
 📟 **Output Temático:** A caixa de texto de cópia ($mm) agora muda de cor de acordo com o tema selecionado (ex: verde neon no Hacker ou ciano fosco na Miku).
 
-☢️ **Potato Mode (UltraLow):** Pensado para os celulares mais humildes! Esse modo desativa todas as transições, congela GIFs, reduz a qualidade das imagens e trava a performance no máximo para eliminar o lag de vez.
-
+☢️ **Potato Mode (UltraLow) 2.0:** Reformulado para quem joga em torradeiras! 
+  - **Anti-Gif System:** Os GIFs agora são substituídos por um emoji de Batata (🥔) para economizar 100% da memória de vídeo.
+  - **Static Drag:** Removida a animação de "deslize" ao mover cards. Agora eles trocam de lugar instantaneamente, evitando que o navegador processe o movimento de várias imagens ao mesmo tempo.
+  - **Zero Estética, 100% FPS:** Desativa sombras, filtros de desfoque e transições de menu.
 
 **Melhorias e Ajustes:**
 

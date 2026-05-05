@@ -1,7 +1,7 @@
 ==================================================================
 
 🛠️ **[Mudae Tier Maker - by Tuxn88](https://tuxn88.github.io/Mudae-Tier-Maker---by-Tuxn88/)**
-Patch de Atualização (ver. 2.1)
+Patch de Atualização (ver. 2.4)
 
 
 **O que há de novo?**
@@ -36,7 +36,7 @@ Patch de Atualização (ver. 2.1)
 👤 **Assinatura Tuxn88:** O primeiro botão de tema agora leva o nome do criador e os créditos "by tuxn88" foram integrados de forma mais limpa ao design.
 
 
-(ver. 2.1)
+(ver. 2.4)
 🛠️ **Mudae Tier Maker - by Tuxn88**
 https://tuxn88.github.io/Mudae-Tier-Maker---by-Tuxn88/
 

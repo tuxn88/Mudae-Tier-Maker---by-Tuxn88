@@ -6,21 +6,36 @@
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        :root { --bg: #0d0d0d; --panel: #161616; --text: #f0f0f0; --accent: #2dc7b2; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); padding: 15px; margin: 0; }
+        :root { 
+            --bg: #0d0d0d; --panel: #161616; --text: #f0f0f0; 
+            --pastel-blue: #74b9ff; --pastel-purple: #a29bfe; 
+            --pastel-green: #55efc4; --pastel-pink: #fd79a8;
+        }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); color: var(--text); padding: 15px; margin: 0; }
         .menu { background: var(--panel); padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #333; }
-        textarea { width: 100%; height: 80px; background: #1f1f1f; color: #fff; border: 1px solid #444; border-radius: 6px; padding: 10px; margin-bottom: 10px; resize: none; }
+        textarea { width: 100%; height: 70px; background: #1f1f1f; color: #fff; border: 1px solid #444; border-radius: 6px; padding: 10px; margin-bottom: 10px; resize: none; }
         
-        .tier-row { display: flex; min-height: 120px; background: #111; border-radius: 8px; border: 1px solid #333; margin-bottom: 8px; overflow: hidden; }
-        .tier-label { width: 100px; display: flex; align-items: center; justify-content: center; background: var(--accent); color: #000; font-weight: 900; text-transform: uppercase; padding: 10px; text-align: center; cursor: pointer; }
+        .tier-row { display: flex; min-height: 120px; background: #111; border-radius: 8px; border: 1px solid #333; margin-bottom: 10px; overflow: hidden; }
+        .tier-sidebar { display: flex; flex-direction: column; width: 30px; background: #1a1a1a; border-right: 1px solid #333; }
+        .color-input { width: 100%; height: 100%; border: none; padding: 0; cursor: pointer; background: none; }
+        .tier-label { width: 100px; display: flex; align-items: center; justify-content: center; background: #2dc7b2; color: #000; font-weight: 900; text-transform: uppercase; padding: 10px; text-align: center; font-size: 12px; }
         .tier-content { flex-grow: 1; display: flex; flex-wrap: wrap; gap: 6px; padding: 10px; min-height: 100px; }
         
-        .card { width: 90px; background: #1f1f1f; border-radius: 5px; border: 1px solid #333; position: relative; transition: 0.2s; }
+        .card { width: 90px; background: #1f1f1f; border-radius: 5px; border: 1px solid #333; position: relative; }
         .card img { width: 100%; height: 125px; object-fit: cover; display: block; pointer-events: none; }
         .card p { font-size: 10px; text-align: center; margin: 5px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 4px; color: #ccc; }
         
-        .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
-        button { padding: 10px 18px; border-radius: 6px; border: none; cursor: pointer; font-weight: bold; font-size: 11px; text-transform: uppercase; }
+        /* Performance Mode */
+        body.perf-mode img { image-rendering: -webkit-optimize-contrast; filter: saturate(0.8); }
+
+        .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+        button { padding: 9px 14px; border-radius: 6px; border: none; cursor: pointer; font-weight: bold; font-size: 10px; text-transform: uppercase; transition: 0.2s; }
+        .btn-load { background: var(--pastel-blue); }
+        .btn-tier { background: var(--pastel-purple); }
+        .btn-perf { background: #dfe6e9; }
+        .btn-colors { background: var(--pastel-pink); }
+        .btn-save { background: #fab1a0; }
+        
         #reserva { margin-top: 30px; border-top: 2px dashed #333; padding-top: 20px; }
     </style>
 </head>
@@ -29,9 +44,11 @@
 <div class="menu">
     <textarea id="inputLista" placeholder="Nome - URL"></textarea>
     <div class="btn-row">
-        <button style="background: #74b9ff" onclick="gerarCards()">📥 Load Harem</button>
-        <button style="background: #a29bfe" onclick="adicionarTier()">➕ Add Tier</button>
-        <button style="background: #fab1a0" onclick="baixarImagem()">🖼️ Export PNG</button>
+        <button class="btn-load" onclick="gerarCards()">📥 Load Harem</button>
+        <button class="btn-tier" onclick="adicionarTier()">➕ Add Tier</button>
+        <button class="btn-colors" onclick="randomPalette()">🎨 Colors</button>
+        <button class="btn-perf" id="perfBtn" onclick="togglePerf()">❄️ Performance</button>
+        <button class="btn-save" onclick="baixarImagem()">🖼️ Export PNG</button>
         <button style="background: #ff7675; margin-left: auto;" onclick="resetar()">🔄 Reset</button>
     </div>
 </div>
@@ -45,7 +62,7 @@
 </div>
 
 <script>
-    // Burlador de bloqueio do Mudae v2 (via Proxy Worker)
+    // Proxy v2 para Mudae images
     function fixUrl(url) {
         if (url.includes('mudae.net')) {
             return 'https://images.weserv.nl/?url=' + encodeURIComponent(url.replace('https://', '')) + '&n=-1';
@@ -60,44 +77,63 @@
 
         linhas.forEach(linha => {
             if (linha.includes(' - ')) {
-                const parts = linha.split(' - ');
-                const nome = parts[0].trim();
-                const url = parts[1].trim();
-                
+                const [nome, url] = linha.split(' - ').map(s => s.trim());
                 const card = document.createElement('div');
                 card.className = 'card';
-                card.innerHTML = `<img src="${fixUrl(url)}" onerror="this.src='https://via.placeholder.com/90x125?text=Error'"><p>${nome}</p>`;
+                card.innerHTML = `<img src="${fixUrl(url)}"><p>${nome}</p>`;
                 container.appendChild(card);
             }
         });
         document.getElementById('inputLista').value = '';
     }
 
-    function adicionarTier(nome = "NEW TIER") {
+    function adicionarTier(nome = "NEW TIER", cor = "#2dc7b2") {
         const row = document.createElement('div');
         row.className = 'tier-row';
         row.innerHTML = `
-            <div class="tier-label" contenteditable="true">${nome}</div>
+            <div class="tier-sidebar"><input type="color" class="color-input" value="${cor}" oninput="updateColor(this)"></div>
+            <div class="tier-label" style="background:${cor}" contenteditable="true">${nome}</div>
             <div class="tier-content"></div>
         `;
         document.getElementById('lista-tiers').appendChild(row);
         new Sortable(row.querySelector('.tier-content'), { group: 'shared', animation: 150 });
     }
 
-    // Iniciar com o tier padrão
-    adicionarTier("tuxn88");
+    function updateColor(input) {
+        input.closest('.tier-row').querySelector('.tier-label').style.background = input.value;
+    }
+
+    function randomPalette() {
+        const rows = document.querySelectorAll('.tier-row');
+        rows.forEach((row, i) => {
+            const color = `hsl(${(i * 40) % 360}, 70%, 70%)`;
+            const label = row.querySelector('.tier-label');
+            const input = row.querySelector('.color-input');
+            label.style.background = color;
+            // Converte HSL para Hex simples para o input
+            input.value = "#" + Math.floor(Math.random()*16777215).toString(16);
+        });
+    }
+
+    function togglePerf() {
+        document.body.classList.toggle('perf-mode');
+        document.getElementById('perfBtn').textContent = document.body.classList.contains('perf-mode') ? '🔥 Normal' : '❄️ Performance';
+    }
+
+    // Inicialização
+    adicionarTier("tuxn88", "#2dc7b2");
     new Sortable(document.getElementById('reserva-content'), { group: 'shared', animation: 150 });
 
     async function baixarImagem() {
         const area = document.getElementById('capture-area');
-        const canvas = await html2canvas(area, { backgroundColor: '#0d0d0d', useCORS: true, allowTaint: false });
+        const canvas = await html2canvas(area, { backgroundColor: '#0d0d0d', useCORS: true });
         const link = document.createElement('a');
-        link.download = 'mudae-tier-list.png';
-        link.href = canvas.toDataURL('image/png');
+        link.download = 'tier-list.png';
+        link.href = canvas.toDataURL();
         link.click();
     }
 
-    function resetar() { if(confirm("Deseja resetar tudo?")) location.reload(); }
+    function resetar() { if(confirm("Resetar?")) location.reload(); }
 </script>
 </body>
 </html>

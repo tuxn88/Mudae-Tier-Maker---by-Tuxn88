@@ -58,6 +58,9 @@
         .card img { width: 100%; height: 115px; object-fit: cover; border-radius: 3px 3px 0 0; display: block; pointer-events: none; }
         .card p { font-size: 8px; padding: 4px 2px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #ccc; }
         .card.selected { border: 2px solid var(--pastel-blue); z-index: 10; box-shadow: 0 0 10px rgba(116, 185, 255, 0.5); }
+        
+        /* Ajuste: Personagens marcadas com X ficam mais escuras */
+        .card.missing { filter: brightness(0.4) grayscale(0.8); }
         .card.missing::after { content: "❌"; position: absolute; top: 2px; right: 2px; font-size: 14px; text-shadow: 0 0 3px black; z-index: 5; }
 
         .sidebar-header { font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
@@ -293,28 +296,49 @@
 
     function gerarCards() {
         const linhas = document.getElementById('inputLista').value.split('\n');
-        const novosNomes = [];
+        const linksNovos = [];
+        
         linhas.forEach(linha => {
             if (linha.includes(' - ')) {
                 const [nome, url] = linha.split(' - ').map(s => s.trim());
-                novosNomes.push(nome);
-                const existente = document.querySelector(`[data-nome="${nome}"]`);
-                if (existente) {
-                    existente.querySelector('img').src = fixUrl(url);
-                    existente.classList.remove('missing');
+                const urlTratada = fixUrl(url);
+                linksNovos.push(urlTratada);
+                
+                // AJUSTE 1: Busca pelo link em vez do nome para evitar duplicação
+                const cardsExistentes = document.querySelectorAll('.card');
+                let cardEncontrado = null;
+                
+                for (let c of cardsExistentes) {
+                    if (c.querySelector('img').src === urlTratada) {
+                        cardEncontrado = c;
+                        break;
+                    }
+                }
+
+                if (cardEncontrado) {
+                    // Apenas atualiza o nome e remove a marcação de X
+                    cardEncontrado.setAttribute('data-nome', nome);
+                    cardEncontrado.querySelector('p').innerText = nome;
+                    cardEncontrado.classList.remove('missing');
                 } else {
+                    // Cria novo se não existir o link
                     const card = document.createElement('div');
                     card.className = 'card';
                     card.setAttribute('data-nome', nome);
                     card.setAttribute('data-is-gif', url.toLowerCase().includes('.gif'));
-                    card.innerHTML = `<img src="${fixUrl(url)}" loading="lazy"><p>${nome}</p>`;
+                    card.innerHTML = `<img src="${urlTratada}" loading="lazy"><p>${nome}</p>`;
                     reserva.appendChild(card);
                 }
             }
         });
-        if(novosNomes.length > 0) {
+
+        // Marca como missing quem não estiver no novo input (baseado no link)
+        if(linksNovos.length > 0) {
             document.querySelectorAll('.card').forEach(card => {
-                if (!novosNomes.includes(card.getAttribute('data-nome'))) card.classList.add('missing');
+                const linkCard = card.querySelector('img').src;
+                if (!linksNovos.includes(linkCard)) {
+                    card.classList.add('missing');
+                }
             });
         }
         document.getElementById('inputLista').value = "";

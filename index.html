@@ -51,8 +51,11 @@
         .tier-handle { cursor: grab; width: 30px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #666; }
         .color-strip { width: 8px; cursor: pointer; border: none; padding: 0; background: none; }
         .tier-label { width: 110px; display: flex; align-items: center; justify-content: center; padding: 10px; position: relative; color: #000; font-weight: 900; text-transform: uppercase; text-align: center; font-size: 12px; }
-        .btn-del { position: absolute; top: 4px; right: 4px; cursor: pointer; font-size: 9px; background: rgba(0,0,0,0.2); border-radius: 3px; padding: 2px 4px; border: none; color: white; }
         
+        /* Botões da Label */
+        .btn-del { position: absolute; top: 4px; right: 4px; cursor: pointer; font-size: 9px; background: rgba(0,0,0,0.2); border-radius: 3px; padding: 2px 4px; border: none; color: white; }
+        .btn-copy-tier { position: absolute; top: 4px; left: 4px; cursor: pointer; font-size: 9px; background: rgba(0,0,0,0.2); border-radius: 3px; padding: 2px 4px; border: none; color: white; }
+
         .tier-content { flex-grow: 1; display: flex; flex-wrap: wrap; gap: 5px; padding: 10px; min-height: 100px; }
         .card { width: 85px; background: #1f1f1f; border-radius: 4px; text-align: center; cursor: grab; border: 1px solid #333; position: relative; transition: transform 0.1s; }
         .card img { width: 100%; height: 115px; object-fit: cover; border-radius: 3px 3px 0 0; display: block; pointer-events: none; }
@@ -208,7 +211,6 @@
         sortables.forEach(s => { s.options.animation = anim; });
     }
 
-    // CORREÇÃO: Função para obter a URL original sem o cache da Weserv
     function getOriginalUrl(url) {
         if (url && url.includes('images.weserv.nl/?url=')) {
             const decoded = decodeURIComponent(url.split('url=')[1].split('&')[0]);
@@ -278,11 +280,33 @@
         row.style.borderColor = cor;
         row.innerHTML = `
             <div class="tier-sidebar"><div class="tier-handle">☰</div><input type="color" class="color-strip" value="${cor}" oninput="updateTierColor(this)"></div>
-            <div class="tier-label" style="background:${cor}"><button class="btn-del" onclick="this.closest('.tier-row').remove()">X</button><span contenteditable="true">${nome}</span></div>
+            <div class="tier-label" style="background:${cor}">
+                <button class="btn-copy-tier" title="Copy Tier Names" onclick="copyTierSpecific(this)">📋</button>
+                <button class="btn-del" onclick="this.closest('.tier-row').remove()">X</button>
+                <span contenteditable="true">${nome}</span>
+            </div>
             <div class="tier-content"></div>
         `;
         listaTiers.appendChild(row);
         configurarDrag(row.querySelector('.tier-content'));
+    }
+
+    // NOVA FUNÇÃO: Copia apenas os nomes da tier clicada
+    function copyTierSpecific(btn) {
+        const row = btn.closest('.tier-row');
+        const cards = row.querySelectorAll('.card');
+        let nomes = [];
+        cards.forEach(c => {
+            nomes.push(c.getAttribute('data-nome').split('|')[0].trim());
+        });
+        
+        const result = nomes.length === 0 ? "Empty Tier!" : nomes.join(' $ ');
+        document.getElementById('output').innerText = result;
+        
+        // Opcional: Já copia para o clipboard automaticamente
+        if(nomes.length > 0) {
+            navigator.clipboard.writeText(result).then(() => alert("Tier names copied to output and clipboard!"));
+        }
     }
 
     function updateTierColor(input) {
@@ -309,7 +333,7 @@
         linhas.forEach(linha => {
             if (linha.includes(' - ')) {
                 const [nome, url] = linha.split(' - ').map(s => s.trim());
-                const urlOriginal = getOriginalUrl(url); // Normaliza para comparar
+                const urlOriginal = getOriginalUrl(url);
                 const urlFinal = fixUrl(url);
                 linksNovos.push(urlFinal);
                 
@@ -383,7 +407,7 @@
                 personagens: Array.from(row.querySelectorAll('.card')).map(c => ({
                     nome: c.getAttribute('data-nome'),
                     url: c.querySelector('img').src,
-                    missing: c.classList.contains('missing') // Salva o estado do X
+                    missing: c.classList.contains('missing')
                 }))
             })),
             reserva: Array.from(reserva.querySelectorAll('.card')).map(c => ({
@@ -400,7 +424,6 @@
         const salvo = localStorage.getItem('mudaeFinal_v6');
         if (!salvo) { adicionarTier("tuxn88", "#2dc7b2"); applyTheme('dark'); return; }
         const d = JSON.parse(salvo);
-        
         if(d.config) {
             document.getElementById('cfg-bg').value = d.config.bg;
             document.getElementById('cfg-panel').value = d.config.panel;
@@ -410,20 +433,18 @@
             document.getElementById('cfg-bg-dim').value = d.config.bgDim || 0;
             updateUI();
         }
-        
         d.tiers.forEach(t => {
             adicionarTier(t.nome, t.cor);
             const container = listaTiers.lastElementChild.querySelector('.tier-content');
             t.personagens.forEach(p => renderCard(p, container));
         });
-        
         d.reserva.forEach(p => renderCard(p, reserva));
     }
 
     function renderCard(p, container) {
         const card = document.createElement('div');
         card.className = 'card';
-        if (p.missing) card.classList.add('missing'); // Restaura o estado visual
+        if (p.missing) card.classList.add('missing');
         card.setAttribute('data-nome', p.nome);
         card.setAttribute('data-is-gif', p.url.toLowerCase().includes('.gif'));
         card.innerHTML = `<img src="${p.url}" loading="lazy"><p>${p.nome}</p>`;

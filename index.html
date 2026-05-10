@@ -22,13 +22,11 @@
             color: var(--text); padding: 15px; margin: 0; transition: background 0.3s, color 0.3s;
         }
 
-        /* --- SIDEBAR --- */
         #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 998; }
         #sidebar { position: fixed; left: -300px; top: 0; width: 280px; height: 100%; background: var(--panel); box-shadow: 5px 0 15px rgba(0,0,0,0.5); transition: 0.3s; z-index: 999; padding: 20px; border-right: 1px solid rgba(255,255,255,0.1); overflow-y: auto; box-sizing: border-box; }
         #sidebar.open { left: 0; }
         .sidebar-toggle { position: fixed; left: 15px; top: 15px; width: 45px; height: 45px; background: var(--panel); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 900; font-size: 24px; color: var(--text); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         
-        /* --- POTATO MODE CSS --- */
         body.ultralow * { transition: none !important; animation: none !important; backdrop-filter: none !important; box-shadow: none !important; }
         body.ultralow .card img[src*=".gif"] { display: none !important; }
         body.ultralow .card[data-is-gif="true"]::before { content: "🥔"; display: flex; align-items: center; justify-content: center; height: 115px; font-size: 40px; background: #333; }
@@ -44,7 +42,6 @@
         button:disabled { opacity: 0.4; cursor: not-allowed; filter: grayscale(1); }
         .btn-reset { margin-left: auto; background: #c0392b !important; color: white !important; }
         
-        /* TIERS */
         #lista-tiers { display: flex; flex-direction: column; gap: 8px; }
         .tier-row { display: flex; min-height: 110px; background: rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden; border: 1px solid transparent; backdrop-filter: blur(4px); }
         .tier-sidebar { display: flex; align-items: stretch; background: rgba(0,0,0,0.2); border-right: 1px solid rgba(255,255,255,0.05); }
@@ -52,7 +49,6 @@
         .color-strip { width: 8px; cursor: pointer; border: none; padding: 0; background: none; }
         .tier-label { width: 110px; display: flex; align-items: center; justify-content: center; padding: 10px; position: relative; color: #000; font-weight: 900; text-transform: uppercase; text-align: center; font-size: 12px; }
         
-        /* Botões da Label */
         .btn-del { position: absolute; top: 4px; right: 4px; cursor: pointer; font-size: 9px; background: rgba(0,0,0,0.2); border-radius: 3px; padding: 2px 4px; border: none; color: white; }
         .btn-copy-tier { position: absolute; top: 4px; left: 4px; cursor: pointer; font-size: 9px; background: rgba(0,0,0,0.2); border-radius: 3px; padding: 2px 4px; border: none; color: white; }
 
@@ -193,7 +189,6 @@
         const active = document.body.classList.toggle('ultralow');
         const ultraBtn = document.getElementById('ultraBtn');
         const freezeBtn = document.getElementById('freezeBtn');
-        
         if (active) {
             if (!document.body.classList.contains('freeze-mode')) toggleFreeze();
             freezeBtn.disabled = true;
@@ -212,9 +207,12 @@
     }
 
     function getOriginalUrl(url) {
-        if (url && url.includes('images.weserv.nl/?url=')) {
-            const decoded = decodeURIComponent(url.split('url=')[1].split('&')[0]);
-            return 'https://' + decoded;
+        if (!url) return "";
+        if (url.includes('images.weserv.nl/?url=')) {
+            try {
+                const parts = url.split('url=')[1].split('&')[0];
+                return 'https://' + decodeURIComponent(parts);
+            } catch(e) { return url; }
         }
         return url;
     }
@@ -291,22 +289,14 @@
         configurarDrag(row.querySelector('.tier-content'));
     }
 
-    // NOVA FUNÇÃO: Copia apenas os nomes da tier clicada
     function copyTierSpecific(btn) {
         const row = btn.closest('.tier-row');
         const cards = row.querySelectorAll('.card');
         let nomes = [];
-        cards.forEach(c => {
-            nomes.push(c.getAttribute('data-nome').split('|')[0].trim());
-        });
-        
+        cards.forEach(c => { nomes.push(c.getAttribute('data-nome').split('|')[0].trim()); });
         const result = nomes.length === 0 ? "Empty Tier!" : nomes.join(' $ ');
         document.getElementById('output').innerText = result;
-        
-        // Opcional: Já copia para o clipboard automaticamente
-        if(nomes.length > 0) {
-            navigator.clipboard.writeText(result).then(() => alert("Tier names copied to output and clipboard!"));
-        }
+        if(nomes.length > 0) { navigator.clipboard.writeText(result).then(() => alert("Copied!")); }
     }
 
     function updateTierColor(input) {
@@ -329,30 +319,41 @@
     function gerarCards() {
         const linhas = document.getElementById('inputLista').value.split('\n');
         const linksNovos = [];
+        const nomesNovos = []; // Para backup de detecção por nome
         
+        // 1. Marcar todos os cards existentes como "missing" temporariamente
+        document.querySelectorAll('.card').forEach(c => c.classList.add('missing'));
+
         linhas.forEach(linha => {
             if (linha.includes(' - ')) {
                 const [nome, url] = linha.split(' - ').map(s => s.trim());
                 const urlOriginal = getOriginalUrl(url);
                 const urlFinal = fixUrl(url);
                 linksNovos.push(urlFinal);
+                nomesNovos.push(nome);
                 
                 const cardsExistentes = document.querySelectorAll('.card');
                 let cardEncontrado = null;
                 
+                // Busca profunda por Link ou Nome (corrige erros de versões passadas)
                 for (let c of cardsExistentes) {
                     const srcCard = getOriginalUrl(c.querySelector('img').src);
-                    if (srcCard === urlOriginal) {
+                    const nomeCard = c.getAttribute('data-nome');
+                    
+                    if (srcCard === urlOriginal || nomeCard === nome) {
                         cardEncontrado = c;
                         break;
                     }
                 }
 
                 if (cardEncontrado) {
+                    // Atualiza dados e limpa o erro (X)
                     cardEncontrado.setAttribute('data-nome', nome);
                     cardEncontrado.querySelector('p').innerText = nome;
+                    cardEncontrado.querySelector('img').src = urlFinal;
                     cardEncontrado.classList.remove('missing');
                 } else {
+                    // Só cria se realmente não existir
                     const card = document.createElement('div');
                     card.className = 'card';
                     card.setAttribute('data-nome', nome);
@@ -363,14 +364,6 @@
             }
         });
 
-        if(linksNovos.length > 0) {
-            document.querySelectorAll('.card').forEach(card => {
-                const srcCard = card.querySelector('img').src;
-                if (!linksNovos.includes(srcCard)) {
-                    card.classList.add('missing');
-                }
-            });
-        }
         document.getElementById('inputLista').value = "";
     }
 
@@ -416,12 +409,12 @@
                 missing: c.classList.contains('missing')
             }))
         };
-        localStorage.setItem('mudaeFinal_v6', JSON.stringify(dados));
+        localStorage.setItem('mudaeFinal_v7', JSON.stringify(dados));
         alert("Saved!");
     }
 
     function carregarLocal() {
-        const salvo = localStorage.getItem('mudaeFinal_v6');
+        const salvo = localStorage.getItem('mudaeFinal_v7') || localStorage.getItem('mudaeFinal_v6');
         if (!salvo) { adicionarTier("tuxn88", "#2dc7b2"); applyTheme('dark'); return; }
         const d = JSON.parse(salvo);
         if(d.config) {
@@ -472,7 +465,7 @@
     }
 
     function removeMarked() { if(confirm("Remove all ❌?")) document.querySelectorAll('.card.missing').forEach(c => c.remove()); }
-    function resetarTudo() { if(confirm("Reset everything?")) { localStorage.removeItem('mudaeFinal_v6'); location.reload(); } }
+    function resetarTudo() { if(confirm("Reset everything?")) { localStorage.removeItem('mudaeFinal_v7'); location.reload(); } }
 
     new Sortable(listaTiers, { handle: '.tier-handle', animation: 150 });
     new Sortable(document.getElementById('trash-zone'), { group: 'chars', onAdd: (e) => { (e.items.length > 0 ? e.items : [e.item]).forEach(i => i.remove()); } });

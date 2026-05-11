@@ -22,14 +22,23 @@
             color: var(--text); padding: 15px; margin: 0; transition: background 0.3s, color 0.3s;
         }
 
-        /* Animação RGB */
+        /* --- NOVO: Easter Egg Notice --- */
+        #vip-notice {
+            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+            background: #000; border: 2px solid #ff0000; color: #ff0000;
+            padding: 10px 25px; border-radius: 30px; font-weight: bold; z-index: 2000;
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 20px rgba(255,0,0,0.5); font-size: 14px;
+        }
+        #vip-notice.show { top: 20px; animation: rgbAnim 3s linear infinite; }
+
         @keyframes rgbAnim {
             0% { border-color: #ff0000; color: #ff0000; }
             33% { border-color: #00ff00; color: #00ff00; }
             66% { border-color: #0000ff; color: #0000ff; }
             100% { border-color: #ff0000; color: #ff0000; }
         }
-        body.rgb-mode .menu, body.rgb-mode .tier-row { animation: rgbAnim 3s linear infinite; }
+        body.rgb-mode .menu, body.rgb-mode .tier-row, body.rgb-mode .notes-block { animation: rgbAnim 3s linear infinite; }
         body.rgb-mode #output { animation: rgbAnim 3s linear infinite; }
 
         #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 998; }
@@ -85,16 +94,36 @@
         .footer-area { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding: 10px; }
         #trash-zone { width: 130px; height: 50px; border: 2px dashed #ff7675; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #ff7675; font-weight: bold; font-size: 11px; }
         .credits { opacity: 0.2; font-size: 10px; color: var(--text); cursor: pointer; user-select: none; }
+        
+        /* --- NOVO: Stats --- */
+        .stats-area { font-size: 10px; opacity: 0.5; margin-top: 5px; }
+
+        /* --- NOVO: Area de Notas --- */
+        #notes-area { display: none; }
+        .notes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
+        .notes-block { background: var(--panel); border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); padding: 15px; display: flex; flex-direction: column; }
+        .notes-block input { background: none; border: none; border-bottom: 1px solid var(--accent); color: var(--accent); font-weight: bold; margin-bottom: 10px; padding: 5px; font-size: 14px; outline: none; }
+        .notes-block textarea { height: 150px; margin: 0; background: rgba(0,0,0,0.1); }
+        .btn-note-del { align-self: flex-end; background: #e74c3c; color: white; padding: 5px; font-size: 8px; margin-top: 5px; }
+
         .no-export { display: none !important; }
         .hidden-storage { display: none !important; }
     </style>
 </head>
 <body>
 
+<div id="vip-notice">📢 Notice: SSSVIP Player Online!</div>
+
 <div id="overlay" onclick="toggleSidebar()"></div>
 <div class="sidebar-toggle" onclick="toggleSidebar()">&#9776;</div>
 
 <div id="sidebar">
+    <div class="sidebar-header">📍 Navigation</div>
+    <div style="display:flex; gap:5px; margin-bottom:15px;">
+        <button class="theme-btn" style="flex:1; background: var(--accent); color:#000;" onclick="switchArea('tier')">🖼️ TIER MAKER</button>
+        <button class="theme-btn" style="flex:1; background: var(--pastel-purple); color:#000;" onclick="switchArea('notes')">📝 NOTES</button>
+    </div>
+
     <div class="sidebar-header">🎨 Theme Presets</div>
     <div class="theme-grid">
         <button class="theme-btn" style="border: 1px solid #2ecc71; color: #2ecc71;" onclick="applyTheme('dark')">Tuxn88</button>
@@ -130,39 +159,52 @@
     <input type="range" id="cfg-bg-dim" min="0" max="0.9" step="0.1" value="0" style="width:100%" oninput="updateUI()">
 </div>
 
-<div class="menu">
-    <textarea id="inputLista" placeholder="Character Name - Image URL"></textarea>
-    <div class="btns-row">
-        <button onclick="gerarCards()">📥 LOAD</button>
-        <button onclick="adicionarTier()">➕ TIER</button>
-        <button onclick="randomPastelPalette()">🎨 TIER COLORS</button>
-        <button onclick="salvarLocal()">💾 SAVE</button>
-        <button onclick="baixarImagem()">🖼️ EXPORT PNG</button>
-        <button class="btn-reset" onclick="resetarTudo()">🔄 RESET</button>
-    </div>
-</div>
-
-<div id="capture-area" style="padding: 10px;">
-    <div id="lista-tiers"></div>
-    <div id="reserva-container">
-        <h4 style="opacity:0.5; font-size:12px; margin-bottom:5px;">Storage</h4>
-        <div id="reserva" class="tier-content" style="background: rgba(0,0,0,0.1); border-radius: 8px; border: 1px dashed rgba(255,255,255,0.05);"></div>
-    </div>
-    <div class="footer-area">
-        <div id="ui-actions" style="display:flex; gap:10px;">
-            <div id="trash-zone">DROP TO DELETE</div>
-            <button style="background:#ff7675; color:white; border-radius:8px; border:none; padding:0 10px;" onclick="removeMarked()">❌ CLEAR ALL 'X'</button>
+<div id="main-tier-area">
+    <div class="menu">
+        <textarea id="inputLista" placeholder="Character Name - Image URL"></textarea>
+        <div class="btns-row">
+            <button onclick="gerarCards()">📥 LOAD</button>
+            <button onclick="adicionarTier()">➕ TIER</button>
+            <button onclick="randomPastelPalette()">🎨 TIER COLORS</button>
+            <button onclick="salvarLocal()">💾 SAVE</button>
+            <button onclick="baixarImagem()">🖼️ EXPORT PNG</button>
+            <button class="btn-reset" onclick="resetarTudo()">🔄 RESET</button>
         </div>
-        <div class="credits" onclick="handleRgbClick()">by tuxn88</div>
+    </div>
+
+    <div id="capture-area" style="padding: 10px;">
+        <div id="lista-tiers"></div>
+        <div id="reserva-container">
+            <h4 style="opacity:0.5; font-size:12px; margin-bottom:5px;">Storage</h4>
+            <div id="reserva" class="tier-content" style="background: rgba(0,0,0,0.1); border-radius: 8px; border: 1px dashed rgba(255,255,255,0.05);"></div>
+        </div>
+        <div class="footer-area">
+            <div id="ui-actions" style="display:flex; gap:10px;">
+                <div id="trash-zone">DROP TO DELETE</div>
+                <button style="background:#ff7675; color:white; border-radius:8px; border:none; padding:0 10px;" onclick="removeMarked()">❌ CLEAR ALL 'X'</button>
+            </div>
+            <div style="text-align:right">
+                <div class="credits" onclick="handleRgbClick()">by tuxn88</div>
+                <div class="stats-area" id="char-stats">Harem Count: 0</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu">
+        <div style="display:flex; gap: 8px; margin-bottom: 10px;">
+            <button style="background: #3498db; color: white; flex: 1;" onclick="gerarTextoMM()">🔄 REFRESH</button>
+            <button style="background: #2ecc71; color: white; flex: 2;" onclick="copiarNomes()">📋 COPY</button>
+        </div>
+        <div id="output">Output code will appear here...</div>
     </div>
 </div>
 
-<div class="menu">
-    <div style="display:flex; gap: 8px; margin-bottom: 10px;">
-        <button style="background: #3498db; color: white; flex: 1;" onclick="gerarTextoMM()">🔄 REFRESH</button>
-        <button style="background: #2ecc71; color: white; flex: 2;" onclick="copiarNomes()">📋 COPY</button>
+<div id="notes-area" class="menu">
+    <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="margin:0; color: var(--accent);">📝 Note Station</h2>
+        <button onclick="addNoteBlock()" style="background: var(--accent); color:#000;">+ NEW BLOCK</button>
     </div>
-    <div id="output">Output code will appear here...</div>
+    <div id="notes-container" class="notes-grid"></div>
 </div>
 
 <script>
@@ -170,14 +212,47 @@
     const listaTiers = document.getElementById('lista-tiers');
     const reserva = document.getElementById('reserva');
 
-    // EASTER EGG RGB
+    // --- NOVO: Easter Egg Logic ---
     let clickCount = 0;
     function handleRgbClick() {
         clickCount++;
         if (clickCount >= 8) {
+            const isActivating = !document.body.classList.contains('rgb-mode');
             document.body.classList.toggle('rgb-mode');
+            if(isActivating) showVipNotice();
             clickCount = 0;
         }
+    }
+
+    function showVipNotice() {
+        const notice = document.getElementById('vip-notice');
+        notice.classList.add('show');
+        setTimeout(() => notice.classList.remove('show'), 4000);
+    }
+
+    // --- NOVO: Stats Update ---
+    function updateStats() {
+        const count = document.querySelectorAll('.card').length;
+        document.getElementById('char-stats').textContent = `Harem Count: ${count}`;
+    }
+
+    // --- NOVO: Switch Area (Notes/Tier) ---
+    function switchArea(target) {
+        document.getElementById('main-tier-area').style.display = target === 'tier' ? 'block' : 'none';
+        document.getElementById('notes-area').style.display = target === 'notes' ? 'block' : 'none';
+        toggleSidebar();
+    }
+
+    // --- NOVO: Note Management ---
+    function addNoteBlock(title = "New List", content = "") {
+        const div = document.createElement('div');
+        div.className = 'notes-block';
+        div.innerHTML = `
+            <input type="text" value="${title}" placeholder="Title...">
+            <textarea placeholder="Write your list here...">${content}</textarea>
+            <button class="btn-note-del" onclick="this.parentElement.remove()">DELETE</button>
+        `;
+        document.getElementById('notes-container').appendChild(div);
     }
 
     function toggleSidebar() {
@@ -262,7 +337,8 @@
             animation: document.body.classList.contains('ultralow') ? 0 : 150, 
             multiDrag: true, 
             selectedClass: 'selected',
-            ghostClass: 'ghost'
+            ghostClass: 'ghost',
+            onEnd: updateStats
         });
         sortables.push(s);
     }
@@ -325,7 +401,7 @@
             <div class="tier-sidebar"><div class="tier-handle">☰</div><input type="color" class="color-strip" value="${cor}" oninput="updateTierColor(this)"></div>
             <div class="tier-label" style="background:${cor}">
                 <button class="btn-copy-tier" title="Copy Tier Names" onclick="copyTierSpecific(this)">📋</button>
-                <button class="btn-del" onclick="this.closest('.tier-row').remove()">X</button>
+                <button class="btn-del" onclick="this.closest('.tier-row').remove(); updateStats();">X</button>
                 <span contenteditable="true">${nome}</span>
             </div>
             <div class="tier-content"></div>
@@ -392,6 +468,7 @@
             }
         });
         document.getElementById('inputLista').value = "";
+        updateStats();
     }
 
     async function baixarImagem() {
@@ -435,6 +512,10 @@
                 nome: c.getAttribute('data-nome'),
                 url: c.querySelector('img').src,
                 missing: c.classList.contains('missing')
+            })),
+            notes: Array.from(document.querySelectorAll('.notes-block')).map(b => ({
+                title: b.querySelector('input').value,
+                content: b.querySelector('textarea').value
             }))
         };
     }
@@ -444,7 +525,7 @@
         const blob = new Blob([data], {type: 'text/plain'});
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = `mudae_tier_backup_${new Date().toLocaleDateString()}.txt`;
+        a.download = `mudae_backup_${new Date().toLocaleDateString()}.txt`;
         a.click();
     }
 
@@ -454,19 +535,21 @@
             try {
                 const d = JSON.parse(code);
                 processLoad(d);
-                alert("Imported successfully!");
-            } catch(e) { alert("Invalid backup code!"); }
+                alert("Imported!");
+            } catch(e) { alert("Invalid code!"); }
         }
     }
 
     function salvarLocal() {
-        localStorage.setItem('mudaeFinal_v7', JSON.stringify(getSaveData()));
+        localStorage.setItem('mudaeFinal_v8', JSON.stringify(getSaveData()));
         alert("Saved to Browser!");
     }
 
     function processLoad(d) {
         listaTiers.innerHTML = "";
         reserva.innerHTML = "";
+        document.getElementById('notes-container').innerHTML = "";
+        
         if(d.config) {
             document.getElementById('cfg-bg').value = d.config.bg;
             document.getElementById('cfg-panel').value = d.config.panel;
@@ -474,7 +557,10 @@
             document.getElementById('cfg-btn').value = d.config.btn;
             document.getElementById('cfg-bg-img').value = d.config.bgImg || "";
             document.getElementById('cfg-bg-dim').value = d.config.bgDim || 0;
-            if(d.config.rgb) document.body.classList.add('rgb-mode');
+            if(d.config.rgb) {
+                document.body.classList.add('rgb-mode');
+                showVipNotice();
+            }
             updateUI();
         }
         d.tiers.forEach(t => {
@@ -483,10 +569,13 @@
             t.personagens.forEach(p => renderCard(p, container));
         });
         d.reserva.forEach(p => renderCard(p, reserva));
+        if(d.notes) d.notes.forEach(n => addNoteBlock(n.title, n.content));
+        
+        updateStats();
     }
 
     function carregarLocal() {
-        const salvo = localStorage.getItem('mudaeFinal_v7') || localStorage.getItem('mudaeFinal_v6');
+        const salvo = localStorage.getItem('mudaeFinal_v8') || localStorage.getItem('mudaeFinal_v7');
         if (!salvo) { adicionarTier("tuxn88", "#2dc7b2"); applyTheme('dark'); return; }
         processLoad(JSON.parse(salvo));
     }
@@ -521,20 +610,21 @@
         }
     }
 
-    function removeMarked() { if(confirm("Remove all ❌?")) document.querySelectorAll('.card.missing').forEach(c => c.remove()); }
+    function removeMarked() { if(confirm("Remove all ❌?")) { document.querySelectorAll('.card.missing').forEach(c => c.remove()); updateStats(); } }
     
-    // FIX RESET: AGORA ELE LIMPA TODAS AS VERSÕES
     function resetarTudo() { 
-        if(confirm("DANGER: This will delete everything and reset the site. Continue?")) { 
+        if(confirm("DANGER: This will delete everything. Continue?")) { 
+            localStorage.removeItem('mudaeFinal_v8'); 
             localStorage.removeItem('mudaeFinal_v7'); 
-            localStorage.removeItem('mudaeFinal_v6'); 
-            localStorage.removeItem('mudaeFinal_v5'); 
             location.reload(); 
         } 
     }
 
     new Sortable(listaTiers, { handle: '.tier-handle', animation: 150 });
-    new Sortable(document.getElementById('trash-zone'), { group: 'chars', onAdd: (e) => { (e.items.length > 0 ? e.items : [e.item]).forEach(i => i.remove()); } });
+    new Sortable(document.getElementById('trash-zone'), { group: 'chars', onAdd: (e) => { 
+        (e.items.length > 0 ? e.items : [e.item]).forEach(i => i.remove()); 
+        updateStats();
+    }});
     configurarDrag(reserva);
     window.onload = carregarLocal;
 </script>

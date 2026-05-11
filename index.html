@@ -22,6 +22,7 @@
             color: var(--text); padding: 15px; margin: 0; transition: background 0.3s, color 0.3s;
         }
 
+        /* Animação RGB */
         @keyframes rgbAnim {
             0% { border-color: #ff0000; color: #ff0000; }
             33% { border-color: #00ff00; color: #00ff00; }
@@ -521,7 +522,16 @@
     }
 
     function removeMarked() { if(confirm("Remove all ❌?")) document.querySelectorAll('.card.missing').forEach(c => c.remove()); }
-    function resetarTudo() { if(confirm("Reset everything?")) { localStorage.removeItem('mudaeFinal_v7'); location.reload(); } }
+    
+    // FIX RESET: AGORA ELE LIMPA TODAS AS VERSÕES
+    function resetarTudo() { 
+        if(confirm("DANGER: This will delete everything and reset the site. Continue?")) { 
+            localStorage.removeItem('mudaeFinal_v7'); 
+            localStorage.removeItem('mudaeFinal_v6'); 
+            localStorage.removeItem('mudaeFinal_v5'); 
+            location.reload(); 
+        } 
+    }
 
     new Sortable(listaTiers, { handle: '.tier-handle', animation: 150 });
     new Sortable(document.getElementById('trash-zone'), { group: 'chars', onAdd: (e) => { (e.items.length > 0 ? e.items : [e.item]).forEach(i => i.remove()); } });

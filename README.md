@@ -1,83 +1,50 @@
 ==================================================================
 
-🛠️ **[Mudae Tier Maker - by Tuxn88](https://tuxn88.github.io/Mudae-Tier-Maker---by-Tuxn88/)**
-Patch de Atualização (ver. 2.4)
+🛠️ [Mudae Tier Maker - by Tuxn88](https://tuxn88.github.io/Mudae-Tier-Maker---by-Tuxn88/)
+Patch de Atualização Estável (ver. 3.1)
 
+### **O QUE HÁ DE NOVO?**
 
-**O que há de novo?**
+📦 **BACKUP UNIVERSAL (IMPORT/EXPORT):** Adicionada a função de gerar um arquivo mestre (.txt) com todo o seu progresso. Se o Chrome decidir surtar e apagar seu cache, agora você tem um arquivo para restaurar TUDO: posição das bonecas, cores, nomes das tiers, fundo e configurações. Copie o código, cole na caixa e volte exatamente para onde estava.
 
+☰ **SIDEBAR DE CUSTOMIZAÇÃO:** O painel de ferramentas agora é um menu lateral retrátil. Ele libera espaço na tela para você trabalhar no harem e fecha sozinho se você clicar fora. Organização básica para quem odeia poluição visual.
 
-🎨 **Interface com Sidebar:** O painel de customização agora é um menu lateral retrátil (☰). Ele libera espaço na tela e fecha automaticamente ao clicar fora, deixando o visual limpo para as suas tiers.
+❌ **RASTREAMENTO DE DESERTORES:** O sistema agora detecta automaticamente se alguém saiu da sua lista. Se você carregar um novo código e uma personagem antiga não estiver nele, ela será marcada com um ❌. Útil para saber quem você deu divorce ou trocou/vendeu.
 
-🎭 **Presets de Temas Premium:** 8 temas prontos com um clique! Incluindo o exclusivo **Tuxn88** (dark clássico), **Hatsune Miku (Fosco)**, Cyberpunk, Coffee e modo Hacker.
-
-🎲 **Modo Aleatório Harmônico:** Novo botão que gera uma paleta de cores completa (fundo, painéis e botões) com cores que realmente combinam entre si, garantindo um design profissional sempre.
-
-🖼️ **Dimmer de Fundo:** Adicionada a opção de colocar imagens via URL no fundo com um controle de brilho (slider), para que a imagem não atrapalhe a visão dos personagens.
-
-🕹️ **Botões Adaptativos:** Todos os botões do site agora seguem as cores do tema escolhido e mudam a cor do texto automaticamente para garantir o melhor contraste e leitura.
-
-✨ **Exportação Inteligente:** No PNG salvo, a caixa de **Storage** agora desaparece automaticamente se estiver vazia, garantindo que sua imagem final foque apenas no seu harem.
-
-📟 **Output Temático:** A caixa de texto de cópia ($mm) agora muda de cor de acordo com o tema selecionado (ex: verde neon no Hacker ou ciano fosco na Miku).
-
-☢️ **Potato Mode (UltraLow) 2.0:** Reformulado para quem joga em torradeiras! 
-  - **Anti-Gif System:** Os GIFs agora são substituídos por um emoji de Batata (🥔) para economizar 100% da memória de vídeo.
-  - **Static Drag:** Removida a animação de "deslize" ao mover cards. Agora eles trocam de lugar instantaneamente, evitando que o navegador processe o movimento de várias imagens ao mesmo tempo.
-  - **Zero Estética, 100% FPS:** Desativa sombras, filtros de desfoque e transições de menu.
-
-**Melhorias e Ajustes:**
-
-
-🩵 **Miku v3 Update:** A paleta da Miku foi totalmente refeita com tons de ciano fosco e cinza-azulado profundo, removendo o excesso de brilho para um visual mais elegante.
-
-⚙️ **Performance 2.0:** O botão de Performance foi movido para a sidebar e o código foi otimizado para lidar com harems gigantes sem travamentos.
-
-👤 **Assinatura Tuxn88:** O primeiro botão de tema agora leva o nome do criador e os créditos "by tuxn88" foram integrados de forma mais limpa ao design.
-
-
-(ver. 2.4)
-🛠️ **Mudae Tier Maker - by Tuxn88**
-https://tuxn88.github.io/Mudae-Tier-Maker---by-Tuxn88/
-
+🗑️ **ZONA DE EXTERMÍNIO (TRASH):** Lixeira funcional adicionada ao rodapé. Arraste cards (individuais ou vários selecionados) para lá para deletar. Use o botão "CLEAR ALL 'X'" para dizimar instantaneamente todo mundo que estiver marcado com o ícone de ausência.
 
 ==================================================================
 
+**DESIGN E ESTÉTICA (SEM FRESCURA)**
 
-🛠️ **[Mudae Tier Maker - by Tuxn88](https://tuxn88.github.io/Mudae-Tier-Maker---by-Tuxn88/)**
-Patch de Atualização (ver. 1.6)
+🎨 **ALGORITMOS DE CORES:**
+- **RANDOM UI:** Gera uma paleta completa (fundo, painéis e botões) com cores que não agridem os olhos, usando harmonia cromática automática.
+- **TIER COLORS:** Aplica degradês pastéis em todas as linhas de uma vez para você não perder tempo pintando quadradinho por quadradinho.
 
+🖼️ **CONTROLE DE AMBIENTE:** Suporte para imagens de fundo via URL com Slider de Brilho (Dimmer). Dá para deixar o fundo escuro o suficiente para ler os nomes ou claro o suficiente para ver o wallpaper. 
 
-**O que há de novo?**
+🎭 **PRESETS ADAPTATIVOS:** Acesso imediato a 8 temas pré-configurados (Dark, Cyberpunk, Coffee, Hacker, Miku, entre outros), garantindo uma estética refinada com apenas um clique.
 
+==================================================================
 
-:art: **Sistema de Cores Inteligente:** Novo botão COLORS que gera automaticamente uma paleta em tons pastéis degradê para todos os seus tiers, deixando tudo visualmente harmônico com um clique.
+**PERFORMANCE E LIMPEZA**
 
-:x: **Rastreamento de Harem:** O sistema agora detecta quem saiu da sua lista! Se você carregar um novo código e uma personagem não estiver nele, ela será marcada discretamente com um :x:.
+☢️ **MODO BATATA 2.0 (ULTRALOW):** Reformulado para quem joga em torradeiras ou em um celular movido a lenha!
+- **Anti-Gif System:** Substitui GIFs por emojis de batata (🥔) para economizar 110% da sua memória de vídeo capenga.
+- **Zero Estética, 100% FPS:** Desativa sombras, desfoques e animações de deslize (Static Drag). Agora as cartas trocam de lugar instantaneamente, sem frescura.
 
-:wastebasket: **Zona de Descarte (Trash):** Adicionada uma lixeira funcional no rodapé. Arraste personagens (uma ou várias de uma vez) para lá para removê-las permanentemente da sua coleção.
+❄️ **FREEZE MODE:** Botão para travar animações de interface e otimizar a renderização em harems gigantescos.
 
-:zap: **Limpeza Rápida:** Novo botão REMOVE ALL 'X' ao lado da lixeira para deletar instantaneamente todas as personagens que não fazem mais parte do seu harem atual.
+🔄 **RESET TOTAL:** O botão de Reset agora limpa todo o seu save no navegador de uma vez só, garantindo que o site volte ao estado de fábrica sem deixar lixo no seu navegador.
 
-:snowflake: **Modo Performance:** Novo botão PERFORMANCE para ajudar usuários mobile ou com harems gigantescos; ele otimiza a renderização de imagens e GIFs para reduzir o lag.
+==================================================================
 
-:arrows_counterclockwise: **Reset Total:** Botão de RESET dedicado para limpar todos os dados salvos e recomeçar a tier list do zero sem deixar "lixo" no navegador.
+**NOTAS FINAIS**
 
-:gem: **Tier Personalizado:** O primeiro tier agora vem configurado como tuxn88 na cor verde-azulada padrão (#2dc7b2) como assinatura oficial.
+💎 **EASTER EGGS:** Existem rumores de modos psicodélicos escondidos nos créditos... mas se você for daltônico, nem tente.
 
-
-**Melhorias e Ajustes:**
-
-
-📸 **Download Limpo:** A lixeira e os botões de ação ficam invisíveis no momento de gerar o PNG, garantindo que o resultado final foque apenas na sua tier list.
-
-:eye: **Melhor Legibilidade:** Botões redesenhados com cores pastéis e emojis para facilitar a navegação e o contraste do texto.
-
-:label: **Créditos Integrados:** Marca d'água discreta @tuxn88 adicionada ao rodapé, aparecendo inclusive na imagem baixada.
-
-
-(ver. 1.6)
-🛠️ **Mudae Tier Maker - by Tuxn88**
+(ver. 3.1)
+🛠️ Mudae Tier Maker - by Tuxn88
 https://tuxn88.github.io/Mudae-Tier-Maker---by-Tuxn88/
 
 ==================================================================

@@ -18,8 +18,8 @@ Patch de Atualização Estável (ver. 3.1)
 **DESIGN E ESTÉTICA (SEM FRESCURA)**
 
 🎨 **ALGORITMOS DE CORES:**
-- **RANDOM UI:** Gera uma paleta completa (fundo, painéis e botões) com cores que não agridem os olhos, usando harmonia cromática automática.
-- **TIER COLORS:** Aplica degradês pastéis em todas as linhas de uma vez para você não perder tempo pintando quadradinho por quadradinho.
+- **Random UI:** Gera uma paleta completa (fundo, painéis e botões) com cores que não agridem os olhos, usando harmonia cromática automática.
+- **Tier Colors:** Aplica degradês pastéis em todas as linhas de uma vez para você não perder tempo pintando quadradinho por quadradinho.
 
 🖼️ **CONTROLE DE AMBIENTE:** Suporte para imagens de fundo via URL com Slider de Brilho (Dimmer). Dá para deixar o fundo escuro o suficiente para ler os nomes ou claro o suficiente para ver o wallpaper. 
 

@@ -22,7 +22,6 @@
             color: var(--text); padding: 15px; margin: 0; transition: background 0.3s, color 0.3s;
         }
 
-        /* --- NOVO: Easter Egg Notice --- */
         #vip-notice {
             position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
             background: #000; border: 2px solid #ff0000; color: #ff0000;
@@ -59,7 +58,7 @@
         button { border: none; padding: 10px 14px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; font-size: 10px; display: flex; align-items: center; gap: 4px; background: var(--btn-bg); color: var(--btn-text); border: 1px solid rgba(255,255,255,0.05); }
         button:hover { filter: brightness(1.2); transform: translateY(-1px); }
         button:disabled { opacity: 0.4; cursor: not-allowed; filter: grayscale(1); }
-        .btn-reset { margin-left: auto; background: #c0392b !important; color: white !important; }
+        .btn-reset { margin-left: auto; background: var(--btn-bg) !important; color: var(--btn-text) !important; }
         
         #lista-tiers { display: flex; flex-direction: column; gap: 8px; }
         .tier-row { display: flex; min-height: 110px; background: rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden; border: 1px solid transparent; backdrop-filter: blur(4px); }
@@ -91,20 +90,36 @@
         .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 15px; }
         .theme-btn { background: rgba(255,255,255,0.05); color: var(--text); border: 1px solid rgba(255,255,255,0.1); padding: 8px; font-size: 10px; width: 100%; text-align: center; }
         
+        .nav-btn { background: rgba(0,0,0,0.3); color: var(--text); border: 1px solid rgba(255,255,255,0.05); }
+        .nav-btn.active { background: var(--btn-bg); color: var(--btn-text); }
+
         .footer-area { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding: 10px; }
         #trash-zone { width: 130px; height: 50px; border: 2px dashed #ff7675; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #ff7675; font-weight: bold; font-size: 11px; }
         .credits { opacity: 0.2; font-size: 10px; color: var(--text); cursor: pointer; user-select: none; }
         
-        /* --- NOVO: Stats --- */
         .stats-area { font-size: 10px; opacity: 0.5; margin-top: 5px; }
 
-        /* --- NOVO: Area de Notas --- */
+        /* --- NOTES AREA - ATUALIZADO CONFORME PEDIDO --- */
         #notes-area { display: none; }
         .notes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
-        .notes-block { background: var(--panel); border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); padding: 15px; display: flex; flex-direction: column; }
-        .notes-block input { background: none; border: none; border-bottom: 1px solid var(--accent); color: var(--accent); font-weight: bold; margin-bottom: 10px; padding: 5px; font-size: 14px; outline: none; }
-        .notes-block textarea { height: 150px; margin: 0; background: rgba(0,0,0,0.1); }
-        .btn-note-del { align-self: flex-end; background: #e74c3c; color: white; padding: 5px; font-size: 8px; margin-top: 5px; }
+        .notes-block { background: var(--panel); border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); padding: 10px; display: flex; flex-direction: column; position: relative; }
+        .note-handle { cursor: grab; height: 12px; background: rgba(255,255,255,0.05); border-radius: 5px; margin-bottom: 10px; display: flex; justify-content: center; align-items: center; font-size: 8px; opacity: 0.3; }
+        .notes-block input { background: none; border: none; border-bottom: 1px solid var(--btn-bg); color: var(--btn-bg); font-weight: bold; margin-bottom: 10px; padding: 5px; font-size: 14px; outline: none; text-align: center; }
+        
+        /* Ajuste 1: white-space: pre e overflow para não quebrar linha */
+        .notes-block textarea { 
+            height: 150px; margin: 0; background: rgba(0,0,0,0.1); border-radius: 6px; padding: 10px; 
+            border: none; color: var(--text); resize: vertical;
+            white-space: pre; overflow: auto; overflow-wrap: normal;
+        }
+
+        /* Ajuste 2: Estilização da Scrollbar das notas */
+        .notes-block textarea::-webkit-scrollbar { width: 8px; height: 8px; }
+        .notes-block textarea::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 10px; }
+        .notes-block textarea::-webkit-scrollbar-thumb { background: var(--btn-bg); border-radius: 10px; border: 2px solid var(--panel); }
+        .notes-block textarea::-webkit-scrollbar-thumb:hover { filter: brightness(1.2); }
+
+        .btn-note-del { align-self: flex-end; background: #e74c3c; color: white; padding: 5px 8px; font-size: 8px; margin-top: 8px; border: none; border-radius: 4px; cursor: pointer; }
 
         .no-export { display: none !important; }
         .hidden-storage { display: none !important; }
@@ -120,8 +135,8 @@
 <div id="sidebar">
     <div class="sidebar-header">📍 Navigation</div>
     <div style="display:flex; gap:5px; margin-bottom:15px;">
-        <button class="theme-btn" style="flex:1; background: var(--accent); color:#000;" onclick="switchArea('tier')">🖼️ TIER MAKER</button>
-        <button class="theme-btn" style="flex:1; background: var(--pastel-purple); color:#000;" onclick="switchArea('notes')">📝 NOTES</button>
+        <button id="nav-tier" class="theme-btn nav-btn active" style="flex:1;" onclick="switchArea('tier')">🖼️ TIER MAKER</button>
+        <button id="nav-notes" class="theme-btn nav-btn" style="flex:1;" onclick="switchArea('notes')">📝 NOTES</button>
     </div>
 
     <div class="sidebar-header">🎨 Theme Presets</div>
@@ -135,18 +150,18 @@
         <button class="theme-btn" onclick="applyTheme('lavender')">Lavender</button>
         <button class="theme-btn" onclick="applyTheme('light')">Light</button>
     </div>
-    <button class="theme-btn" style="background: var(--pastel-green); color: #000; margin-bottom: 5px; font-weight: bold;" onclick="randomHarmoniousTheme()">🔀 Random UI</button>
-    <button class="theme-btn" style="background: var(--pastel-purple); color: #000; margin-bottom: 15px; font-weight: bold;" onclick="cyberContrastTheme()">⚡ Cyber Harmony</button>
+    <button id="btn-rand-1" class="theme-btn" style="margin-bottom: 5px; font-weight: bold;" onclick="randomHarmoniousTheme()">🔀 Random UI</button>
+    <button id="btn-rand-2" class="theme-btn" style="margin-bottom: 15px; font-weight: bold;" onclick="cyberContrastTheme()">⚡ Random UI 2.0</button>
 
     <div class="sidebar-header">📦 Data Backup</div>
     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px; margin-bottom:15px;">
-        <button class="theme-btn" style="background:#3498db; color:white;" onclick="exportarBackup()">📤 EXPORT</button>
-        <button class="theme-btn" style="background:#9b59b6; color:white;" onclick="importarBackup()">📥 IMPORT</button>
+        <button id="btn-export" class="theme-btn" style="color:white; font-weight:bold" onclick="exportarBackup()">📤 EXPORT</button>
+        <button id="btn-import" class="theme-btn" style="color:white; font-weight:bold" onclick="importarBackup()">📥 IMPORT</button>
     </div>
 
     <div class="sidebar-header">⚡ Performance</div>
     <button class="theme-btn" id="freezeBtn" style="margin-bottom:5px;" onclick="toggleFreeze()">❄️ PERFORMANCE: OFF</button>
-    <button class="theme-btn" id="ultraBtn" style="background:#e74c3c; color:white;" onclick="toggleUltraLow()">☢️ POTATO MODE: OFF</button>
+    <button id="btn-potato" class="theme-btn" style="color:white; font-weight:bold" onclick="toggleUltraLow()">☢️ POTATO MODE: OFF</button>
 
     <div class="sidebar-header" style="margin-top:20px">🛠️ Customization</div>
     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom: 10px;">
@@ -201,8 +216,8 @@
 
 <div id="notes-area" class="menu">
     <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h2 style="margin:0; color: var(--accent);">📝 Note Station</h2>
-        <button onclick="addNoteBlock()" style="background: var(--accent); color:#000;">+ NEW BLOCK</button>
+        <h2 style="margin:0; color: var(--btn-bg);">📝 Note Station</h2>
+        <button id="btn-new-note" onclick="addNoteBlock()" style="background: var(--btn-bg); color: var(--btn-text);">+ NEW NOTE</button>
     </div>
     <div id="notes-container" class="notes-grid"></div>
 </div>
@@ -212,7 +227,6 @@
     const listaTiers = document.getElementById('lista-tiers');
     const reserva = document.getElementById('reserva');
 
-    // --- NOVO: Easter Egg Logic ---
     let clickCount = 0;
     function handleRgbClick() {
         clickCount++;
@@ -230,26 +244,28 @@
         setTimeout(() => notice.classList.remove('show'), 4000);
     }
 
-    // --- NOVO: Stats Update ---
     function updateStats() {
         const count = document.querySelectorAll('.card').length;
         document.getElementById('char-stats').textContent = `Harem Count: ${count}`;
     }
 
-    // --- NOVO: Switch Area (Notes/Tier) ---
     function switchArea(target) {
         document.getElementById('main-tier-area').style.display = target === 'tier' ? 'block' : 'none';
         document.getElementById('notes-area').style.display = target === 'notes' ? 'block' : 'none';
+        
+        document.getElementById('nav-tier').classList.toggle('active', target === 'tier');
+        document.getElementById('nav-notes').classList.toggle('active', target === 'notes');
+        
         toggleSidebar();
     }
 
-    // --- NOVO: Note Management ---
     function addNoteBlock(title = "New List", content = "") {
         const div = document.createElement('div');
         div.className = 'notes-block';
         div.innerHTML = `
-            <input type="text" value="${title}" placeholder="Title...">
-            <textarea placeholder="Write your list here...">${content}</textarea>
+            <div class="note-handle">⠿⠿⠿</div>
+            <input type="text" value="${title}" placeholder="Title..." style="color: var(--btn-bg); border-bottom-color: var(--btn-bg)">
+            <textarea spellcheck="false" placeholder="Write your list here...">${content}</textarea>
             <button class="btn-note-del" onclick="this.parentElement.remove()">DELETE</button>
         `;
         document.getElementById('notes-container').appendChild(div);
@@ -260,6 +276,19 @@
         const ov = document.getElementById('overlay');
         sb.classList.toggle('open');
         ov.style.display = sb.classList.contains('open') ? 'block' : 'none';
+    }
+
+    function adjustColor(hex, amount) {
+        let usePound = false;
+        if (hex[0] == "#") { hex = hex.slice(1); usePound = true; }
+        let num = parseInt(hex, 16);
+        let r = (num >> 16) + amount;
+        if (r > 255) r = 255; else if (r < 0) r = 0;
+        let b = ((num >> 8) & 0x00FF) + amount;
+        if (b > 255) b = 255; else if (b < 0) b = 0;
+        let g = (num & 0x0000FF) + amount;
+        if (g > 255) g = 255; else if (g < 0) g = 0;
+        return (usePound ? "#" : "") + (g | (b << 8) | (r << 16)).toString(16).padStart(6, '0');
     }
 
     function updateUI() {
@@ -278,6 +307,20 @@
         root.style.setProperty('--btn-text', isDark(btn) ? '#fff' : '#000');
         root.style.setProperty('--bg-dim', dim);
         root.style.setProperty('--bg-img', imgUrl ? `url('${imgUrl}')` : 'none');
+
+        const btnDark = adjustColor(btn, -25);
+        const btnDarker = adjustColor(btn, -50);
+        
+        document.getElementById('btn-rand-1').style.background = btnDark;
+        document.getElementById('btn-rand-2').style.background = btnDarker;
+        document.getElementById('btn-export').style.background = btnDark;
+        document.getElementById('btn-import').style.background = btnDarker;
+        
+        const isPotato = document.body.classList.contains('ultralow');
+        document.getElementById('btn-potato').style.background = isPotato ? btnDark : 'rgba(0,0,0,0.3)';
+        
+        document.querySelectorAll('.notes-block input').forEach(inp => inp.style.color = btn);
+        document.getElementById('btn-new-note').style.background = btn;
     }
 
     function isDark(color) {
@@ -296,16 +339,16 @@
 
     function toggleUltraLow() {
         const active = document.body.classList.toggle('ultralow');
-        const ultraBtn = document.getElementById('ultraBtn');
         const freezeBtn = document.getElementById('freezeBtn');
         if (active) {
             if (!document.body.classList.contains('freeze-mode')) toggleFreeze();
             freezeBtn.disabled = true;
-            ultraBtn.textContent = "☢️ POTATO MODE: ON";
+            document.getElementById('btn-potato').textContent = "☢️ POTATO MODE: ON";
         } else {
             freezeBtn.disabled = false;
-            ultraBtn.textContent = "☢️ POTATO MODE: OFF";
+            document.getElementById('btn-potato').textContent = "☢️ POTATO MODE: OFF";
         }
+        updateUI();
         updateSortables();
     }
 
@@ -625,6 +668,7 @@
         (e.items.length > 0 ? e.items : [e.item]).forEach(i => i.remove()); 
         updateStats();
     }});
+    new Sortable(document.getElementById('notes-container'), { handle: '.note-handle', animation: 150 });
     configurarDrag(reserva);
     window.onload = carregarLocal;
 </script>

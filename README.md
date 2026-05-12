@@ -1,6 +1,15 @@
 ==================================================================
 
 🛠️ [Mudae Tier Maker - by Tuxn88](https://tuxn88.github.io/Mudae-Tier-Maker---by-Tuxn88/)
+Patch de Atualização Estável (ver. 3.8)
+
+### **O QUE HÁ DE NOVO?**
+
+📝 **BLOCO DE NOTAS INTEGRADO:** Adicionada uma nova área de anotações na sidebar para facilitar sua organização. Agora você pode anotar comandos, customizações e o que mais quiser, sem precisar sair da aba do tier maker. Tudo o que você escreve é salvo junto com o seu progresso, mantendo seus lembretes.
+
+==================================================================
+
+🛠️ [Mudae Tier Maker - by Tuxn88](https://tuxn88.github.io/Mudae-Tier-Maker---by-Tuxn88/)
 Patch de Atualização Estável (ver. 3.1)
 
 ### **O QUE HÁ DE NOVO?**

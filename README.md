@@ -1,4 +1,14 @@
 ==================================================================
+🛠️ [Mudae Tier Maker - by Tuxn88](https://tuxn88.github.io/Mudae-Tier-Maker---by-Tuxn88/)
+Patch de Atualização Estável (ver. 4.1)
+
+### **O QUE HÁ DE NOVO?**
+
+✔️ **CLIQUE PARA SELECIONAR TUDO:** Adicionado um botão discreto ao lado do "Clear All 'X'" para selecionar rapidamente todos os itens visíveis no local de armazenamento atual (Storage).
+
+📤 **MOVER EM LOTE:** Ao lado do botão "Selecionar Tudo", agora existe um botão "Mover Selecionados". Ao clicar nele, abre um menu perguntando para qual Tier você deseja enviar todas as imagens selecionadas de uma vez só.
+
+==================================================================
 
 🛠️ [Mudae Tier Maker - by Tuxn88](https://tuxn88.github.io/Mudae-Tier-Maker---by-Tuxn88/)
 Patch de Atualização Estável (ver. 3.8)
@@ -15,6 +25,8 @@ Patch de Atualização Estável (ver. 3.1)
 ### **O QUE HÁ DE NOVO?**
 
 📦 **BACKUP UNIVERSAL (IMPORT/EXPORT):** Adicionada a função de gerar um arquivo mestre (.txt) com todo o seu progresso. Se o Chrome decidir surtar e apagar seu cache, agora você tem um arquivo para restaurar TUDO: posição das bonecas, cores, nomes das tiers, fundo e configurações. Copie o código, cole na caixa e volte exatamente para onde estava.
+
+📫 **FUNCIONALIDADE PARA O $NOTES:** Agora é possível copiar o nome (já formatado para a Mudae) das personagens de apenas um tier em expecífico, assim facilitando a aplicação de notas em todas as personagens de um tier.
 
 ☰ **SIDEBAR DE CUSTOMIZAÇÃO:** O painel de ferramentas agora é um menu lateral retrátil. Ele libera espaço na tela para você trabalhar no harem e fecha sozinho se você clicar fora. Organização básica para quem odeia poluição visual.
 

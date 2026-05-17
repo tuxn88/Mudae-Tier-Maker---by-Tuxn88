@@ -197,6 +197,8 @@
             <div id="ui-actions" style="display:flex; gap:10px;">
                 <div id="trash-zone">DROP TO DELETE</div>
                 <button style="background:#ff7675; color:white; border-radius:8px; border:none; padding:0 10px;" onclick="removeMarked()">❌ CLEAR ALL 'X'</button>
+                <button style="background:#3498db; color:white; border-radius:8px; border:none; padding:0 10px;" onclick="selecionarTodosReserva()">全 SELECT ALL</button>
+                <button style="background:#9b59b6; color:white; border-radius:8px; border:none; padding:0 10px;" onclick="moverEmLote()">📦 MOVE SELECTED</button>
             </div>
             <div style="text-align:right">
                 <div class="credits" onclick="handleRgbClick()">by tuxn88</div>
@@ -485,7 +487,7 @@
         document.querySelectorAll('.card').forEach(c => c.classList.add('missing'));
         linhas.forEach(linha => {
             if (linha.includes(' - ')) {
-                const [nome, url] = linha.split(' - ').map(s => s.trim());
+                const [nome, url] = inlineCardData(linha);
                 const urlOriginal = getOriginalUrl(url);
                 const urlFinal = fixUrl(url);
                 const cardsExistentes = document.querySelectorAll('.card');
@@ -501,17 +503,93 @@
                     cardEncontrado.querySelector('img').src = urlFinal;
                     cardEncontrado.classList.remove('missing');
                 } else {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.setAttribute('data-nome', nome);
-                    card.setAttribute('data-is-gif', url.toLowerCase().includes('.gif'));
-                    card.innerHTML = `<img src="${urlFinal}" loading="lazy"><p>${nome}</p>`;
-                    reserva.appendChild(card);
+                    criarCardElemento(nome, url, urlFinal, reserva);
                 }
             }
         });
         document.getElementById('inputLista').value = "";
         updateStats();
+    }
+
+    function inlineCardData(linha) {
+        return linha.split(' - ').map(s => s.trim());
+    }
+
+    function criarCardElemento(nome, url, urlFinal, container) {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.setAttribute('data-nome', nome);
+        card.setAttribute('data-is-gif', url.toLowerCase().includes('.gif'));
+        card.innerHTML = `<img src="${urlFinal}" loading="lazy"><p>${nome}</p>`;
+        
+        // Adiciona evento de clique para alternar seleção manual
+        card.addEventListener('click', function(e) {
+            // Evita disparar se estiver arrastando
+            if (e.target.tagName !== 'BUTTON') {
+                card.classList.toggle('selected');
+            }
+        });
+
+        container.appendChild(card);
+    }
+
+    function selecionarTodosReserva() {
+        const cards = reserva.querySelectorAll('.card');
+        if(cards.length === 0) return;
+        
+        // Se já tiverem selecionados, desseleciona tudo; caso contrário, seleciona tudo.
+        const todosSelecionados = Array.from(cards).every(c => c.classList.contains('selected'));
+        cards.forEach(c => {
+            if (todosSelecionados) {
+                c.classList.remove('selected');
+            } else {
+                c.classList.add('selected');
+            }
+        });
+    }
+
+    function moverEmLote() {
+        const selecionados = document.querySelectorAll('.card.selected');
+        if (selecionados.length === 0) {
+            alert("Nenhum personagem selecionado! Clique nos personagens para selecionar.");
+            return;
+        }
+
+        const rows = document.querySelectorAll('.tier-row');
+        if (rows.length === 0) {
+            alert("Nenhuma tier criada para enviar os personagens!");
+            return;
+        }
+
+        let mensagem = `Selecione o número da Tier para mover os ${selecionados.length} selecionados:\n\n`;
+        mensagem += `0 - [Mover para o Storage / Reserva]\n`;
+        rows.forEach((row, idx) => {
+            const nomeTier = row.querySelector('.tier-label span').innerText;
+            mensagem += `${idx + 1} - ${nomeTier}\n`;
+        });
+
+        const escolha = prompt(mensagem);
+        if (escolha === null || escolha.trim() === "") return;
+
+        const numEscolha = parseInt(escolha.trim(), 10);
+        if (numEscolha === 0) {
+            selecionados.forEach(c => {
+                reserva.appendChild(c);
+                c.classList.remove('selected');
+            });
+            updateStats();
+            alert("Movidos com sucesso para o Storage!");
+        } else if (numEscolha > 0 && numEscolha <= rows.length) {
+            const destino = rows[numEscolha - 1].querySelector('.tier-content');
+            selecionados.forEach(c => {
+                destino.appendChild(c);
+                c.classList.remove('selected');
+            });
+            updateStats();
+            alert("Movidos com sucesso!");
+        } else {
+            alert("Opção inválida!");
+        }
     }
 
     async function baixarImagem() {
@@ -624,13 +702,9 @@
     }
 
     function renderCard(p, container) {
-        const card = document.createElement('div');
-        card.className = 'card';
-        if (p.missing) card.classList.add('missing');
-        card.setAttribute('data-nome', p.nome);
-        card.setAttribute('data-is-gif', p.url.toLowerCase().includes('.gif'));
-        card.innerHTML = `<img src="${p.url}" loading="lazy"><p>${p.nome}</p>`;
-        container.appendChild(card);
+        criarCardElemento(p.nome, p.url, p.url, container);
+        const cardElement = container.lastElementChild;
+        if (p.missing && cardElement) cardElement.classList.add('missing');
     }
 
     function gerarTextoMM() {

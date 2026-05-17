@@ -1,4 +1,5 @@
 ==================================================================
+
 🛠️ [Mudae Tier Maker - by Tuxn88](https://tuxn88.github.io/Mudae-Tier-Maker---by-Tuxn88/)
 Patch de Atualização Estável (ver. 4.1)
 
@@ -64,7 +65,7 @@ Patch de Atualização Estável (ver. 3.1)
 
 💎 **EASTER EGGS:** Existem rumores de modos psicodélicos escondidos nos créditos... mas se você for daltônico, nem tente.
 
-(ver. 3.1)
+(ver. 4.1)
 🛠️ Mudae Tier Maker - by Tuxn88
 https://tuxn88.github.io/Mudae-Tier-Maker---by-Tuxn88/
 

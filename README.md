@@ -1,6 +1,3 @@
-## 💾 Download Rápido
-Se não quiser instalar o Python, baixa a versão pronta em `.exe` na aba [Releases](../../releases)!
-
 ==================================================================
 
 🛠️ [Mudae Tier Maker - by Tuxn88](https://tuxn88.github.io/Mudae-Tier-Maker---by-Tuxn88/)
